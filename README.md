@@ -1,74 +1,78 @@
-# React + TypeScript + Vite
+# Sito Web Matrimonio - William & Martina
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sito web personalizzato per il matrimonio di William Costa e Martina Soldavini, previsto per il 5 settembre 2026.
 
-Currently, two official plugins are available:
+## 📋 Descrizione
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Questo è un sito web moderno e responsive sviluppato con React, TypeScript e Vite, progettato per fornire agli invitati tutte le informazioni necessarie sul matrimonio. Il sito include:
 
-## React Compiler
+- **Hero Section**: Sezione introduttiva con i nomi degli sposi e la data del matrimonio
+- **Chi Siamo**: La storia della coppia
+- **Timeline**: Programma dettagliato della giornata
+- **Location**: Informazioni sulla location (Agriturismo Camanin) con mappa interattiva e menu
+- **Ospitalità**: Suggerimenti per hotel e B&B nelle vicinanze
+- **Dress Code**: Indicazioni sull'abbigliamento richiesto
+- **Lista Nozze**: Informazioni per i regali
+- **RSVP**: Modulo per confermare la presenza e indicare allergie/preferenze alimentari
+- **FAQ**: Domande frequenti
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tecnologie Utilizzate
 
-## Expanding the ESLint configuration
+- **React 19** - Libreria UI
+- **TypeScript** - Tipizzazione statica
+- **Vite** - Build tool e dev server
+- **Tailwind CSS** - Framework CSS utility-first
+- **Framer Motion** - Animazioni
+- **MapLibre GL** - Mappe interattive
+- **Lucide React** - Icone
+- **Radix UI** - Componenti UI accessibili
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Setup e Installazione
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+# Installa le dipendenze
+npm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Avvia il server di sviluppo
+npm run dev
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Build per produzione
+npm run build
+
+# Preview del build di produzione
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📁 Struttura del Progetto
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
-# wedding_site
+wedding/
+├── public/              # File statici (immagini, assets)
+├── src/
+│   ├── components/      # Componenti React
+│   │   ├── ui/         # Componenti UI riutilizzabili
+│   │   └── ...         # Componenti specifici del sito
+│   ├── config/         # File di configurazione
+│   │   └── wedding_data.json  # Dati del matrimonio
+│   ├── lib/            # Utilities e helper
+│   ├── App.tsx         # Componente principale
+│   └── main.tsx        # Entry point
+├── index.html
+└── package.json
+```
+
+## ⚙️ Configurazione
+
+I dati del matrimonio (date, location, menu, ecc.) sono centralizzati nel file `src/config/wedding_data.json`. Modificando questo file è possibile aggiornare facilmente tutte le informazioni visualizzate sul sito.
+
+## 📝 Note
+
+**Questo è un repository privato per uso personale.** Il sito è stato sviluppato specificamente per il matrimonio di William e Martina e non è destinato a uso pubblico o commerciale.
+
+## 📅 Data Matrimonio
+
+5 settembre 2026 - Agriturismo Camanin, Crezzo (LC)
+
+---
+
+*Creato con ❤️ da William Costa & Martina Soldavini*

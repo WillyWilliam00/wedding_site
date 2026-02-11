@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/*
+  Theme tokens from wedding_data.json
+  Defined here via @theme so Tailwind generates utility classes:
+  bg-silk-white, text-satin-gold, font-heading, etc.
+  useEffect in App.tsx can override these at runtime for white-label.
+*/
+@theme {
+  --color-silk-white: #F9F8F1;
+  --color-light-ivory: #FFFDF5;
+  --color-satin-gold: #D4AF37;
+  --color-gradient-start: #FFFDF5;
+  --color-gradient-end: #D4AF37;
+
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+@layer base {
+  :root {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    font-weight: 400;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background-color: var(--color-light-ivory);
+    color: #333;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+
+}

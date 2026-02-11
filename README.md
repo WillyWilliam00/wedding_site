@@ -1,10 +1,11 @@
-# Sito Web Matrimonio - William & Martina
+# Template Sito Web Matrimonio - Riutilizzabile
 
-Sito web personalizzato per il matrimonio di William Costa e Martina Soldavini, previsto per il 5 settembre 2026.
+Sito web per matrimoni realizzato come **template riutilizzabile** per uso interno, pensato per essere adattato e rivenduto a diversi clienti modificando solo i dati di configurazione.
 
 ## 📋 Descrizione
 
-Questo è un sito web moderno e responsive sviluppato con React, TypeScript e Vite, progettato per fornire agli invitati tutte le informazioni necessarie sul matrimonio. Il sito include:
+Questo è un sito web moderno e responsive sviluppato con React, TypeScript e Vite, progettato per fornire agli invitati tutte le informazioni necessarie sul matrimonio.  
+È pensato come **base generica riutilizzabile**: il contenuto specifico del matrimonio (nomi, date, location, menu, ecc.) è gestito tramite configurazione.
 
 - **Hero Section**: Sezione introduttiva con i nomi degli sposi e la data del matrimonio
 - **Chi Siamo**: La storia della coppia
@@ -61,18 +62,26 @@ wedding/
 └── package.json
 ```
 
-## ⚙️ Configurazione
+## ⚙️ Configurazione (multi-matrimonio)
 
-I dati del matrimonio (date, location, menu, ecc.) sono centralizzati nel file `src/config/wedding_data.json`. Modificando questo file è possibile aggiornare facilmente tutte le informazioni visualizzate sul sito.
+L'intero sito è guidato dal file di configurazione principale `src/config/wedding_data.json`.  
+Modificando **solo questo file** puoi adattare il sito a matrimoni diversi, senza toccare i componenti React.
+
+- **`metadata`**: informazioni generali sul cliente/progetto
+- **`design`**: colori, font, effetti (es. hero scroll)
+- **`content`**: tutti i testi e i dati del matrimonio (navbar, nomi, date, location, menu, ospitalità, dress code, lista nozze, FAQ, RSVP, contatti, footer)
+
+In pratica, questo repository funge da **template vendibile**: per ogni nuovo matrimonio si crea una nuova configurazione in `wedding_data.json` (o una sua variante gestita a livello di build/deploy).
 
 ## 📝 Note
 
-**Questo è un repository privato per uso personale.** Il sito è stato sviluppato specificamente per il matrimonio di William e Martina e non è destinato a uso pubblico o commerciale.
+**Questo è un repository privato per uso interno.**  
+Il codice è pensato come base riutilizzabile per progetti di siti matrimonio destinati alla vendita/realizzazione per terzi.
 
-## 📅 Data Matrimonio
+## 📅 Esempio di Configurazione
 
-5 settembre 2026 - Agriturismo Camanin, Crezzo (LC)
+L'esempio attuale in `wedding_data.json` è basato sul matrimonio di *William Costa & Martina Soldavini* (5 settembre 2026 - Agriturismo Camanin, Crezzo - LC) ed è pensato solo come demo di configurazione.
 
 ---
 
-*Creato con ❤️ da William Costa & Martina Soldavini*
+*Creato con ❤️ da William Costa*

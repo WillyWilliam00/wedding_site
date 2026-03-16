@@ -7,11 +7,12 @@
   useEffect in App.tsx can override these at runtime for white-label.
 */
 @theme {
-  --color-silk-white: #F9F8F1;
-  --color-light-ivory: #FFFDF5;
-  --color-satin-gold: #D4AF37;
-  --color-gradient-start: #FFFDF5;
-  --color-gradient-end: #D4AF37;
+  --color-background: var(--background, #FFFFFF);
+  --color-surface: var(--surface, #FAF9F6);
+  --color-primary: var(--primary, #D4AF37);
+  --color-accent: var(--primary, #D4AF37);
+  --color-gradient-start: #FAF9F6;
+  --color-gradient-end: var(--primary, #D4AF37);
 
   --font-heading: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
@@ -19,6 +20,12 @@
 
 @layer base {
   :root {
+    --primary: #D4AF37;
+    --background: #FFFFFF;
+    --surface: #FAF9F6;
+    --text-primary: #1A1A1A;
+    --text-secondary: #555555;
+
     font-family: var(--font-body);
     line-height: 1.6;
     font-weight: 400;
@@ -34,13 +41,7 @@
     box-sizing: border-box;
   }
 
-  body {
-    margin: 0;
-    min-width: 320px;
-    min-height: 100vh;
-    background-color: var(--color-light-ivory);
-    color: #333;
-  }
+
 
   h1,
   h2,

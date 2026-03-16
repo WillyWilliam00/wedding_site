@@ -17,7 +17,7 @@ L'architettura è **Data-Driven**: ogni contenuto (testi, nomi, date, colori, im
 - **Ospitalità**: Suggerimenti per alloggi con card descrittive.
 - **Dress Code**: Indicazioni sull'abbigliamento e palette colori suggerita.
 - **Lista Nozze**: Dettagli per i regali (IBAN, messaggi personalizzati).
-- **RSVP**: Modulo avanzato per conferme, allergie e preferenze alimentari.
+- **RSVP**: Modulo avanzato multi-ospite (TanStack Form) per conferme, allergie e preferenze alimentari.
 - **FAQ**: Lista dinamica di domande frequenti.
 - **Gallery**: Galleria fotografica integrata direttamente da Sanity.
 
@@ -29,7 +29,8 @@ L'architettura è **Data-Driven**: ogni contenuto (testi, nomi, date, colori, im
 - **Vite** - Build tool ultra-veloce.
 - **Tailwind CSS v4** - Styling moderno con variabili CSS native e sintassi V4.
 - **Sanity CMS** - Backend headless per la gestione dei contenuti in tempo reale.
-- **React Query** - Gestione efficiente del data fetching e caching.
+- **TanStack Form** - Gestione dei moduli complessi e multi-ospite.
+- **TanStack Query** - Gestione efficiente del data fetching e caching.
 - **Framer Motion** - Animazioni fluide e interattive.
 - **MapLibre GL** - Mappe interattive personalizzate.
 - **Lucide React** - Set di icone moderno e leggero.

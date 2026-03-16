@@ -13,6 +13,7 @@ interface AccommodationOption {
     price_range: string;
     phone: string;
     website: string;
+    image_url?: string;
 }
 
 interface AccommodationProps {
@@ -35,7 +36,7 @@ export default function Accommodation({ data }: AccommodationProps) {
     }, [sortBy, data.accommodation.options]);
 
     return (
-        <section id="ospitalita" className="min-h-[60vh] px-6 py-20 bg-light-ivory">
+        <section id="ospitalita" className="min-h-[60vh] px-6 py-20 bg-linear-to-br from-primary/10 via-primary/20 to-primary/10">
             <div className="max-w-440 mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -44,33 +45,33 @@ export default function Accommodation({ data }: AccommodationProps) {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-12"
                 >
-                    <h2 className="text-4xl md:text-5xl mb-4 font-heading text-gray-800">
+                    <h2 className="text-3xl md:text-5xl mb-4 font-heading text-gray-800">
                         {data.accommodation.title}
                     </h2>
-                    <p className="text-lg text-gray-600 italic">{data.accommodation.subtitle}</p>
+                    <p className="text-base text-gray-600 italic">{data.accommodation.subtitle}</p>
                 </motion.div>
 
                 {/* Sort Controls */}
                 <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
                     <div className="flex items-center gap-2 mr-2 text-gray-400">
                         <ArrowDownUp className="w-4 h-4" />
-                        <span className="text-xs uppercase tracking-widest font-bold">Ordina per:</span>
+                        <span className="text-xs md:text-sm uppercase tracking-widest font-bold">Ordina per:</span>
                     </div>
                     <div className="flex bg-white p-1 rounded-full shadow-sm border border-gray-100">
                         <button
                             onClick={() => setSortBy('distance_km')}
-                            className={`px-6 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${sortBy === 'distance_km'
-                                    ? 'bg-satin-gold text-white shadow-md'
-                                    : 'text-gray-500 hover:text-satin-gold'
+                            className={`px-6 py-2 rounded-full text-xs md:text-sm font-medium transition-all cursor-pointer ${sortBy === 'distance_km'
+                                ? 'bg-primary text-white shadow-md'
+                                : 'text-gray-500 hover:text-primary'
                                 }`}
                         >
                             Vicinanza
                         </button>
                         <button
                             onClick={() => setSortBy('price_val')}
-                            className={`px-6 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${sortBy === 'price_val'
-                                    ? 'bg-satin-gold text-white shadow-md'
-                                    : 'text-gray-500 hover:text-satin-gold'
+                            className={`px-6 py-2 rounded-full text-xs md:text-sm font-medium transition-all cursor-pointer ${sortBy === 'price_val'
+                                ? 'bg-primary text-white shadow-md'
+                                : 'text-gray-500 hover:text-primary'
                                 }`}
                         >
                             Costo
@@ -94,33 +95,42 @@ export default function Accommodation({ data }: AccommodationProps) {
                                 className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 flex flex-col group overflow-hidden"
                             >
                                 <div className="p-1">
-                                    <div className="bg-gray-50 h-32 flex items-center justify-center rounded-t-lg relative">
-                                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm text-xs font-bold text-satin-gold">
+                                    <div className="bg-gray-50 h-48 flex items-center justify-center rounded-t-lg relative overflow-hidden">
+                                        {option.image_url ? (
+                                            <img
+                                                src={option.image_url}
+                                                alt={option.name}
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                loading="lazy"
+                                            />
+                                        ) : (
+                                            <div className="text-4xl font-heading text-gray-200 group-hover:text-primary/20 transition-colors uppercase tracking-widest px-4 text-center">
+                                                {option.name}
+                                            </div>
+                                        )}
+                                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm text-xs md:text-sm font-bold text-primary z-10">
                                             {option.type}
-                                        </div>
-                                        <div className="text-4xl font-heading text-gray-200 group-hover:text-satin-gold/20 transition-colors uppercase tracking-widest px-4 text-center">
-                                            {option.name}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="p-6 flex flex-col flex-1">
-                                    <h3 className="text-xl mb-4 font-heading text-gray-800 line-clamp-1">
+                                    <h3 className="text-lg md:text-xl mb-4 font-heading text-gray-800 line-clamp-1">
                                         {option.name}
                                     </h3>
 
-                                    <div className="space-y-3 mb-6 flex-1 text-sm">
+                                    <div className="space-y-3 mb-6 flex-1 text-xs md:text-sm">
                                         <div className="text-gray-500 flex items-start gap-2">
-                                            <MapPin className="w-4 h-4 shrink-0 text-satin-gold" />
+                                            <MapPin className="w-4 h-4 shrink-0 text-primary" />
                                             <span>{option.address}</span>
                                         </div>
 
                                         <div className="flex items-center justify-between">
-                                            <div className={`flex items-center gap-2 ${sortBy === 'distance_km' ? 'text-satin-gold font-bold' : ''}`}>
+                                            <div className={`flex items-center gap-2 ${sortBy === 'distance_km' ? 'text-primary font-bold' : ''}`}>
                                                 <Navigation className="w-4 h-4 shrink-0" />
                                                 <span className="font-medium">{option.distance}</span>
                                             </div>
-                                            <div className={`flex items-center gap-1 ${sortBy === 'price_val' ? 'text-satin-gold font-bold' : ''}`}>
-                                                <span className={`${sortBy === 'price_val' ? 'text-satin-gold/60' : 'text-gray-400'}`}>{option.price_range}</span>
+                                            <div className={`flex items-center gap-1 ${sortBy === 'price_val' ? 'text-primary font-bold' : ''}`}>
+                                                <span className={`${sortBy === 'price_val' ? 'text-primary/60' : 'text-gray-400'}`}>{option.price_range}</span>
                                                 <span className="text-gray-900">{option.price}</span>
                                             </div>
                                         </div>
@@ -139,7 +149,7 @@ export default function Accommodation({ data }: AccommodationProps) {
                                             href={option.website}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-satin-gold text-white hover:bg-satin-gold/90 transition-colors text-sm font-medium"
+                                            className="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors text-sm font-medium"
                                         >
                                             <ExternalLink className="w-3.5 h-3.5" />
                                             Sito

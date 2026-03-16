@@ -50,7 +50,7 @@ export default function Navbar({ data }: NavbarProps) {
                 <a
                     href="#hero"
                     onClick={(e) => { e.preventDefault(); handleLinkClick('#hero'); }}
-                    className={`font-heading text-xl md:text-2xl font-semibold transition-colors duration-500 ${isScrolled ? 'text-satin-gold' : 'text-white'
+                    className={`font-heading text-xl md:text-2xl font-semibold transition-colors duration-500 ${isScrolled ? 'text-primary' : 'text-white'
                         }`}
                 >
                     {groomFirst} & {brideFirst}
@@ -63,7 +63,7 @@ export default function Navbar({ data }: NavbarProps) {
                             key={index}
                             href={link.href}
                             onClick={(e) => { e.preventDefault(); handleLinkClick(link.href); }}
-                            className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 hover:text-satin-gold ${isScrolled ? 'text-gray-700' : 'text-white/90'
+                            className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 hover:text-primary ${isScrolled ? 'text-gray-700' : 'text-white/90'
                                 }`}
                         >
                             {link.label}
@@ -97,7 +97,7 @@ export default function Navbar({ data }: NavbarProps) {
                                 key={index}
                                 href={link.href}
                                 onClick={() => { handleLinkClick(link.href); }}
-                                className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-light-ivory hover:text-satin-gold transition-colors"
+                                className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-surface hover:text-primary transition-colors"
                             >
                                 {link.label}
                             </a>

@@ -3,7 +3,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
 interface PhotoGalleryProps {
-    images: string[];
+    images: {
+        imageUrl: string;
+        alt: string;
+    }[];
     locationName: string;
     title?: string;
 }
@@ -39,14 +42,14 @@ export default function PhotoGallery({ images, locationName, title = 'Galleria F
             <h3 className="text-3xl md:text-4xl mb-8 font-heading text-white text-center">
                 {title}
             </h3>
-            <div className="relative rounded-2xl overflow-hidden bg-white shadow-xl border-2 border-satin-gold shadow-satin-gold/20 group max-w-5xl mx-auto">
+            <div className="relative rounded-2xl overflow-hidden bg-transparent shadow-xl border-2 border-primary shadow-primary/20 group max-w-5xl mx-auto">
                 {/* Images */}
                 <div className="aspect-video md:aspect-21/9 min-h-[400px] max-h-[600px] min-w-[400px] max-w-[600px]">
                     <AnimatePresence mode="wait">
                         <motion.img
                             key={currentImageIndex}
-                            src={images[currentImageIndex]}
-                            alt={`${locationName} - Foto ${currentImageIndex + 1}`}
+                            src={images[currentImageIndex].imageUrl}
+                            alt={images[currentImageIndex].alt}
                             className="w-full h-full object-cover"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -79,8 +82,8 @@ export default function PhotoGallery({ images, locationName, title = 'Galleria F
                             key={index}
                             onClick={() => goToImage(index)}
                             className={`w-2.5 h-2.5 rounded-full transition-all ${index === currentImageIndex
-                                    ? 'bg-satin-gold w-8'
-                                    : 'bg-white/70 hover:bg-white'
+                                ? 'bg-primary w-8'
+                                : 'bg-white/70 hover:bg-white'
                                 }`}
                             aria-label={`Vai all'immagine ${index + 1}`}
                         />

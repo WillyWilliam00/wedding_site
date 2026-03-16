@@ -4,7 +4,7 @@ import { Sparkles } from 'lucide-react';
 
 const SectionDivider: React.FC = () => {
     return (
-        <div className="relative py-12 flex items-center justify-center overflow-hidden">
+        <div className="relative py-12 bg-surface flex items-center justify-center overflow-hidden">
             {/* Container for the decorative element and lines */}
             <div className="flex items-center w-full max-w-4xl px-4">
 
@@ -14,7 +14,7 @@ const SectionDivider: React.FC = () => {
                     whileInView={{ scaleX: 1, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.5, ease: "easeOut" }}
-                    className="h-px flex-1 bg-linear-to-r from-transparent via-satin-gold to-satin-gold origin-right"
+                    className="h-px flex-1 bg-linear-to-r from-transparent via-primary to-primary origin-right"
                 />
 
                 {/* Center Icon */}
@@ -23,7 +23,7 @@ const SectionDivider: React.FC = () => {
                     whileInView={{ scale: 1, rotate: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.5, ease: "backOut" }}
-                    className="mx-4 text-satin-gold"
+                    className="mx-4 text-primary"
                 >
                     <Sparkles size={24} strokeWidth={1.5} />
                 </motion.div>
@@ -34,7 +34,7 @@ const SectionDivider: React.FC = () => {
                     whileInView={{ scaleX: 1, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.5, ease: "easeOut" }}
-                    className="h-px flex-1 bg-linear-to-l from-transparent via-satin-gold to-satin-gold origin-left"
+                    className="h-px flex-1 bg-linear-to-l from-transparent via-primary to-primary origin-left"
                 />
             </div>
         </div>

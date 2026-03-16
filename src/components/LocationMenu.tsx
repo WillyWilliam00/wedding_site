@@ -3,7 +3,6 @@ import { MapPinned, UtensilsCrossed, X, Navigation } from 'lucide-react';
 import { useState } from 'react';
 import { Map, MapControls, MapMarker, MarkerContent, MarkerPopup } from '@/components/ui/map';
 import PhotoGallery from '@/components/PhotoGallery';
-import { useEffect } from 'react';
 
 interface LocationMenuProps {
     data: {
@@ -149,7 +148,6 @@ export default function LocationMenu({ data }: LocationMenuProps) {
             {data.gallery.length > 0 && <div className=" p-4 bg-linear-to-br from-surface/50 to-gradient-end/50 z-10 hidden lg:block max-w-4xl rounded-3xl shadow-2xl shadow-primary/20">
                 <PhotoGallery
                     images={data.gallery}
-                    locationName={data.location.name}
                 />
             </div>}
 

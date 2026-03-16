@@ -7,11 +7,10 @@ interface PhotoGalleryProps {
         imageUrl: string;
         alt: string;
     }[];
-    locationName: string;
     title?: string;
 }
 
-export default function PhotoGallery({ images, locationName, title = 'Galleria Fotografica' }: PhotoGalleryProps) {
+export default function PhotoGallery({ images, title = 'Galleria Fotografica' }: PhotoGalleryProps) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     const nextImage = () => {

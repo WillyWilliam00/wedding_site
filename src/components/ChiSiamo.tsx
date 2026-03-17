@@ -68,10 +68,10 @@ export default function ChiSiamo({ data }: ChiSiamoProps) {
                     </div>
 
                     <h2 className="text-3xl md:text-6xl mb-8 font-heading text-gray-800 leading-tight">
-                        {data.chi_siamo.subtitle.includes(' ') ? (
+                        {data.chi_siamo.subtitle.includes(',') ? (
                             <>
-                                {data.chi_siamo.subtitle.split(' ').slice(0, -2).join(' ')}{' '}
-                                <span className="text-primary italic">{data.chi_siamo.subtitle.split(' ').slice(-2).join(' ')}</span>
+                                {data.chi_siamo.subtitle.split(',').slice(0, -1).join(' ')}{','}
+                                <span className="text-primary italic">{data.chi_siamo.subtitle.split(',').slice(-1).join(' ')}</span>
                             </>
                         ) : data.chi_siamo.subtitle}
                     </h2>

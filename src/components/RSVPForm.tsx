@@ -1,6 +1,8 @@
 import { useForm } from '@tanstack/react-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChefHat, Send, Mail, Phone, Plus, Minus, Trash2 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import toast from 'react-hot-toast';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -55,9 +57,78 @@ export default function RSVPForm({ data }: RSVPFormProps) {
         defaultValues: {
             guests: [makeGuest()] as GuestEntry[],
         },
+        validators: {
+            onMount: ({ value }) => {
+                const isInvalid = value.guests.some(
+                    (guest) => !guest.name?.trim() || !guest.surname?.trim()
+                )
+                if (isInvalid) return 'Missing fields';
+                return undefined;
+            },
+            onChange: ({ value }) => {
+                // Controlliamo se tutti gli ospiti hanno nome e cognome
+                const isInvalid = value.guests.some(
+                    (guest) => !guest.name?.trim() || !guest.surname?.trim()
+                );
+
+                // Se ritorniamo una stringa, il form è "invalid" e canSubmit diventa false
+                if (isInvalid) return 'Missing fields';
+
+                // Se ritorniamo undefined, il form è "valid" e canSubmit diventa true
+                return undefined;
+            },
+        },
         onSubmit: async ({ value }) => {
-            console.log('Dati inviati:', value);
-            alert(data.rsvp.success_message);
+            try {
+
+                for (const guest of value.guests) {
+                    const { data: existingGuest, error: checkError } = await supabase
+                        .from('guests')
+                        .select('id')
+                        .ilike('name', guest.name.trim())
+                        .ilike('surname', guest.surname.trim())
+                        .maybeSingle()
+
+
+                    if (checkError) throw checkError;
+
+                    if (existingGuest) {
+                        toast.error(`Ospite ${guest.name} ${guest.surname} già presente`);
+                        return;
+                    }
+                }
+                const { data: groupData, error: groupError } = await supabase
+                    .from('rsvp_groups')
+                    .insert([{}])
+                    .select('id')
+                    .single()
+
+                if (groupError) throw groupError;
+
+                const guestsToInsert = value.guests.map(g => ({
+                    group_id: groupData.id,
+                    name: g.name.trim(),
+                    surname: g.surname.trim(),
+                    dietary_info: {
+                        allergens: g.allergens,
+                        other_allergen: g.showOther ? g.otherAllergen.trim() : null,
+                    }
+                }))
+
+                const { error: guestsError } = await supabase
+                    .from('guests')
+                    .insert(guestsToInsert)
+
+                if (guestsError) throw guestsError;
+
+
+
+                toast.success(data.rsvp.success_message);
+                form.reset();
+            } catch (err) {
+                console.error('Errore durante l\'invio RSVP:', err);
+                toast.error("Ops! C'è stato un errore tecnico. Per favore riprova o contattaci direttamente.");
+            }
         },
     });
 
@@ -81,7 +152,7 @@ export default function RSVPForm({ data }: RSVPFormProps) {
             {/* Card del Form */}
             <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-3xl w-full bg-white rounded-3xl shadow-2xl p-8 md:p-14 border border-gray-50 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-primary/20 via-primary to-primary/20" />
-                
+
                 <div className="flex flex-col items-center mb-12">
                     <h2 className="text-4xl md:text-5xl text-center mb-4 font-heading text-gray-800 tracking-tight">{data.rsvp.title}</h2>
                     <p className="text-center text-sm md:text-base text-gray-400 max-w-md italic leading-relaxed">{data.rsvp.subtitle}</p>
@@ -156,38 +227,56 @@ export default function RSVPForm({ data }: RSVPFormProps) {
 
                                                 {/* 3. Nested Fields per ogni proprietà dell'ospite */}
                                                 <div className="grid md:grid-cols-2 gap-6">
-                                                    <form.Field name={`guests[${i}].name`}>
+                                                    <form.Field name={`guests[${i}].name`} validators={{
+                                                        onChange: ({ value }) => {
+                                                            if (!value) {
+                                                                return 'Il nome è obbligatorio';
+                                                            }
+                                                        }
+                                                    }}>
                                                         {(field) => (
                                                             <div className="space-y-1.5">
                                                                 <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">{data.rsvp.fields.name} *</label>
-                                                                    <input
-                                                                        id={field.name}
-                                                                        name={field.name}
-                                                                        value={field.state.value ?? ''}
-                                                                        onBlur={field.handleBlur}
-                                                                        onChange={(e) => field.handleChange(e.target.value)}
-                                                                        className="w-full bg-white border-b-2 border-gray-100 px-1 py-2 text-gray-800 focus:border-primary outline-none transition-colors placeholder:text-gray-200"
-                                                                        placeholder="es. Giulia"
-                                                                        required
-                                                                    />
+                                                                <input
+                                                                    id={field.name}
+                                                                    name={field.name}
+                                                                    value={field.state.value ?? ''}
+                                                                    onBlur={field.handleBlur}
+                                                                    onChange={(e) => field.handleChange(e.target.value)}
+                                                                    className="w-full bg-white border-b-2 border-gray-100 px-1 py-2 text-gray-800 focus:border-primary outline-none transition-colors placeholder:text-gray-200"
+                                                                    placeholder="es. Giulia"
+
+                                                                />
+                                                                {field.state.meta.errors.length > 0 && (
+                                                                    <span className="text-[10px] text-red-500 font-bold uppercase">{field.state.meta.errors[0]}</span>
+                                                                )}
                                                             </div>
                                                         )}
                                                     </form.Field>
 
-                                                    <form.Field name={`guests[${i}].surname`}>
+                                                    <form.Field name={`guests[${i}].surname`} validators={{
+                                                        onChange: ({ value }) => {
+                                                            if (!value) {
+                                                                return 'Il cognome è obbligatorio';
+                                                            }
+                                                        }
+                                                    }}>
                                                         {(field) => (
                                                             <div className="space-y-1.5">
                                                                 <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">{data.rsvp.fields.surname} *</label>
-                                                                    <input
-                                                                        id={field.name}
-                                                                        name={field.name}
-                                                                        value={field.state.value ?? ''}
-                                                                        onBlur={field.handleBlur}
-                                                                        onChange={(e) => field.handleChange(e.target.value)}
-                                                                        className="w-full bg-white border-b-2 border-gray-100 px-1 py-2 text-gray-800 focus:border-primary outline-none transition-colors placeholder:text-gray-200"
-                                                                        placeholder="es. Bianchi"
-                                                                        required
-                                                                    />
+                                                                <input
+                                                                    id={field.name}
+                                                                    name={field.name}
+                                                                    value={field.state.value ?? ''}
+                                                                    onBlur={field.handleBlur}
+                                                                    onChange={(e) => field.handleChange(e.target.value)}
+                                                                    className="w-full bg-white border-b-2 border-gray-100 px-1 py-2 text-gray-800 focus:border-primary outline-none transition-colors placeholder:text-gray-200"
+                                                                    placeholder="es. Bianchi"
+
+                                                                />
+                                                                {field.state.meta.errors.length > 0 && (
+                                                                    <span className="text-[10px] text-red-500 font-bold uppercase">{field.state.meta.errors[0]}</span>
+                                                                )}
                                                             </div>
                                                         )}
                                                     </form.Field>
@@ -210,8 +299,8 @@ export default function RSVPForm({ data }: RSVPFormProps) {
                                                                             onChange={() => {
                                                                                 const current = (field.state.value ?? []);
                                                                                 field.handleChange(
-                                                                                    current.includes(opt) 
-                                                                                        ? current.filter(o => o !== opt) 
+                                                                                    current.includes(opt)
+                                                                                        ? current.filter(o => o !== opt)
                                                                                         : [...current, opt]
                                                                                 );
                                                                             }}
@@ -270,15 +359,31 @@ export default function RSVPForm({ data }: RSVPFormProps) {
                         )}
                     </form.Field>
 
-                    <button
-                        type="submit"
-                        className="w-full flex items-center justify-center gap-3 py-5 rounded-2xl text-white font-bold text-base shadow-xl shadow-primary/20 transition-all hover:scale-[1.01] hover:shadow-2xl bg-primary active:scale-95 group"
+                    <form.Subscribe
+                        selector={(state) => [state.canSubmit, state.isSubmitting]}
                     >
-                        <span className="group-hover:translate-x-1 transition-transform">
-                            {data.rsvp.submit_button}
-                        </span>
-                        <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                    </button>
+                        {([canSubmit, isSubmitting]) => (
+                            <button
+                                type="submit"
+                                disabled={!canSubmit}
+                                className={`w-full flex items-center justify-center gap-3 py-5 rounded-2xl text-white font-bold text-base shadow-xl transition-all active:scale-95 group ${!canSubmit
+                                    ? 'bg-gray-300 cursor-not-allowed shadow-none'
+                                    : 'bg-primary shadow-primary/20 hover:scale-[1.01] hover:shadow-2xl'
+                                    }`}
+                            >
+                                {isSubmitting ? (
+                                    <span className="animate-pulse italic text-sm">Inviando la conferma...</span>
+                                ) : (
+                                    <>
+                                        <span className="group-hover:translate-x-1 transition-transform">
+                                            {data.rsvp.submit_button}
+                                        </span>
+                                        <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                                    </>
+                                )}
+                            </button>
+                        )}
+                    </form.Subscribe>
                 </form>
             </motion.div>
 

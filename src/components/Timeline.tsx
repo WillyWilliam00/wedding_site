@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Church, GlassWater, Utensils } from 'lucide-react';
+import { Church, GlassWater, Utensils, Cake } from 'lucide-react';
 
 interface TimelineEvent {
     time: string;
@@ -22,13 +22,14 @@ const iconComponents = {
     church: <Church className="w-6 h-6" />,
     glass: <GlassWater className="w-6 h-6" />,
     utensils: <Utensils className="w-6 h-6" />,
+    cake: <Cake className="w-6 h-6" />,
 };
 
 export default function Timeline({ data }: TimelineProps) {
     return (
         <section
             id="timeline"
-            className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-24 bg-gradient-to-tr from-surface to-primary/30 overflow-hidden"
+            className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-24 bg-linear-to-tr from-surface to-primary/30 overflow-hidden"
         >
             <div className="w-full max-w-7xl mx-auto">
                 <motion.h2

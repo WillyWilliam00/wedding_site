@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { handleResize } from '../hooks/useHandleResize';
+import { useCountDown } from '../hooks/useCountDown';
 
 interface HeroSectionProps {
     data: {
@@ -21,55 +22,41 @@ interface HeroSectionProps {
     };
 }
 
-interface TimeLeft {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-}
 
-function calculateTimeLeft(targetDate: string): TimeLeft {
-    const difference = +new Date(targetDate) - +new Date();
 
-    if (difference > 0) {
-        return {
-            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((difference / 1000 / 60) % 60),
-            seconds: Math.floor((difference / 1000) % 60)
-        };
-    }
 
-    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-}
 
 export default function HeroSection({ data }: HeroSectionProps) {
     const { couple_names, hero, wedding_date } = data;
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft(wedding_date));
+    const timeLeft = useCountDown(wedding_date);
+    const { scrollY } = useScroll();
+    const vh = handleResize()
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft(calculateTimeLeft(wedding_date));
-        }, 1000);
+    const y = useTransform(scrollY, [0, vh], ["-5%", "10%"]);
+    const scale = useTransform(scrollY, [0, vh], [1.1, 1.25]);
+    const opacity = useTransform(scrollY, [0, vh * 0.8, vh], [1, 1, 0.4]);
 
-        return () => clearInterval(timer);
-    }, [wedding_date]);
+    const contentY = useTransform(scrollY, [0, vh], ["0%", "-30%"]);
+    const contentOpacity = useTransform(scrollY, [0, vh * 0.5], [1, 0]);
+
+
 
     return (
-        <section id="hero" className="relative w-full h-dvh overflow-hidden flex flex-col">
+        <section
+            id="hero"
+            className="sticky top-0 w-full h-dvh overflow-hidden flex flex-col z-0"
+        >
+            {/* Background Image & Vignette */}
             {/* Background Image & Vignette */}
             <div className="absolute inset-0 z-0">
-
                 <motion.div
-                    initial={{ scale: 1.1 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 15, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+                    style={{ y, scale, opacity }}
                     className="w-full h-full"
                 >
                     <img
                         src={hero.image_url}
                         alt="Wedding Hero"
-                        className="w-full h-full object-cover  "
+                        className="w-full h-full object-cover"
                     />
                 </motion.div>
                 {/* Vignette Overlay */}
@@ -78,7 +65,10 @@ export default function HeroSection({ data }: HeroSectionProps) {
             </div>
 
             {/* Central Content */}
-            <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4">
+            <motion.div
+                style={{ y: contentY, opacity: contentOpacity }}
+                className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4"
+            >
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -97,13 +87,14 @@ export default function HeroSection({ data }: HeroSectionProps) {
                         <span className="w-12 md:w-24 h-0.5 bg-primary/40" />
                     </div>
                 </motion.div>
-            </div>
+            </motion.div>
 
             {/* Floating Countdown Bar (Bottom) */}
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
+                style={{ opacity: contentOpacity }}
                 className="relative z-20 w-full flex justify-end pb-12 pe-12"
             >
                 <div className="bg-background/10 backdrop-blur-md border border-primary/20 rounded-2xl px-8 py-4 md:py-6 shadow-2xl flex gap-8 md:gap-16">
@@ -127,3 +118,4 @@ export default function HeroSection({ data }: HeroSectionProps) {
         </section>
     );
 }
+

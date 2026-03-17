@@ -43,7 +43,9 @@ function App() {
       <Navbar data={{ navbar: activeData.navbar, couple_names: activeData.couple_names }} />
 
       <HeroSection data={{ hero: activeData.hero, couple_names: activeData.couple_names, wedding_date: activeData.wedding_date }} />
-      <SectionDivider />
+      
+      <div className="relative z-10 bg-background">
+        <SectionDivider />
 
       <ChiSiamo data={{ chi_siamo: activeData.chi_siamo }} />
       <SectionDivider />
@@ -76,6 +78,7 @@ function App() {
       <SectionDivider />
 
       <Footer data={{ footer: activeData.footer, couple_names: activeData.couple_names }} />
+      </div>
       <button
         onClick={handleScrollToTop}
         className={cn(

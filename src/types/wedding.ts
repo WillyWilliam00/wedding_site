@@ -260,3 +260,11 @@ export interface ContactSettingsData {
     submitButton: string;
   };
 }
+
+
+export interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}

@@ -2,9 +2,9 @@ import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import ChiSiamo from './components/ChiSiamo';
 import Timeline from './components/Timeline';
+import ChiesaSection from './components/ChiesaSection';
 import LocationMenu from './components/LocationMenu';
 import Accommodation from './components/Accommodation';
-import DressCode from './components/DressCode';
 import ListaNozze from './components/ListaNozze';
 import FAQ from './components/FAQ';
 import RSVPForm from './components/RSVPForm';
@@ -39,45 +39,49 @@ function App() {
   }, [])
 
   return (
+
     <div className="min-h-screen">
       <Navbar data={{ navbar: activeData.navbar, couple_names: activeData.couple_names }} />
 
       <HeroSection data={{ hero: activeData.hero, couple_names: activeData.couple_names, wedding_date: activeData.wedding_date }} />
-      
+
       <div className="relative z-10 bg-background">
         <SectionDivider />
 
-      <ChiSiamo data={{ chi_siamo: activeData.chi_siamo }} />
-      <SectionDivider />
+        <ChiSiamo data={{ chi_siamo: activeData.chi_siamo }} />
+        <SectionDivider />
 
-      <Timeline data={{ timeline: activeData.timeline }} />
-      <SectionDivider />
+        <Timeline data={{ timeline: activeData.timeline }} />
+        <SectionDivider />
 
-      <LocationMenu
-        data={{
-          location: activeData.location,
-          menu: activeData.menu,
-          gallery: activeData.gallery,
-        }}
-      />
-      <SectionDivider />
+        <ChiesaSection data={{ chiesa: activeData.chiesa }} />
+        <SectionDivider />
 
-      <DressCode data={{ dress_code: activeData.dress_code }} />
-      <SectionDivider />
+        <LocationMenu
+          data={{
+            location: activeData.location,
+            menu: activeData.menu,
+            gallery: activeData.gallery,
+          }}
+        />
+        <SectionDivider />
 
-      <Accommodation data={{ accommodation: activeData.accommodation }} />
-      <SectionDivider />
+        {/* <DressCode data={{ dress_code: activeData.dress_code }} />
+      <SectionDivider /> */}
 
-      <ListaNozze data={{ listaNozze: activeData.listaNozze }} />
-      <SectionDivider />
+        <Accommodation data={{ accommodation: activeData.accommodation }} />
+        <SectionDivider />
 
-      <RSVPForm data={{ rsvp: activeData.rsvp, contact: activeData.contact }} />
-      <SectionDivider />
+        <ListaNozze data={{ listaNozze: activeData.listaNozze }} />
+        <SectionDivider />
 
-      <FAQ data={{ faq: activeData.faq }} />
-      <SectionDivider />
+        <RSVPForm data={{ rsvp: activeData.rsvp, contact: activeData.contact }} />
+        <SectionDivider />
 
-      <Footer data={{ footer: activeData.footer, couple_names: activeData.couple_names }} />
+        <FAQ data={{ faq: activeData.faq }} />
+        <SectionDivider />
+
+        <Footer data={{ footer: activeData.footer, couple_names: activeData.couple_names }} />
       </div>
       <button
         onClick={handleScrollToTop}
@@ -89,6 +93,7 @@ function App() {
         <ArrowUp className="w-6 h-6 text-primary group-hover:text-background" />
       </button>
     </div>
+
   );
 }
 

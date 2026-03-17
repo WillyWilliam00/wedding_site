@@ -10,6 +10,7 @@ export interface SanityWeddingData {
   accommodation: AccommodationData;
   contactSettings: ContactSettingsData;
   menu: MenuData;
+  chiesa: ChiesaData;
 }
 
 export interface GalleryData {
@@ -55,6 +56,18 @@ export interface UnifiedWeddingData {
     google_maps_url: string;
     description: string;
     gallery: string[];
+  };
+  chiesa: {
+    name: string;
+    address: string;
+    coordinates: [number, number];
+    image_url: string;
+    google_maps_url: string;
+    description: string;
+    gallery: {
+      imageUrl: string;
+      alt: string;
+    }[];
   };
   gallery: {
     imageUrl: string;
@@ -208,6 +221,19 @@ export interface LocationData {
   image: any;
   googleMapsUrl: string;
   description: string;
+}
+
+export interface ChiesaData {
+  name: string;
+  address: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  image: any;
+  googleMapsUrl: string;
+  description: string;
+  gallery: GalleryData[];
 }
 
 export interface ListaNozzeData {

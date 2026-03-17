@@ -18,6 +18,7 @@ export function useWeddingData() {
           asset,
           alt
         },
+        "chiesa": *[_type == "chiesa"][0],
         "listaNozze": *[_type == "listaNozze"][0],
         "chiSiamo": *[_type == "chiSiamo"][0],
         "dressCode": *[_type == "dressCode"][0],

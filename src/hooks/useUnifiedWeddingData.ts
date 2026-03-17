@@ -51,6 +51,23 @@ export function useUnifiedWeddingData() {
       description: sanityData.location?.description || '',
       gallery: [],
     },
+    chiesa: {
+      name: sanityData.chiesa.name || '',
+      address: sanityData.chiesa.address || '',
+      coordinates: sanityData.chiesa.coordinates
+        ? ([sanityData.chiesa.coordinates.lng, sanityData.chiesa.coordinates.lat] as [number, number])
+        : ([0, 0] as [number, number]),
+      image_url: sanityData.chiesa.image ? urlFor(sanityData.chiesa.image).url() : '',
+      google_maps_url: sanityData.chiesa.googleMapsUrl || '',
+      description: sanityData.chiesa.description || '',
+      gallery: sanityData.chiesa.gallery?.map((image: { asset: any, alt: string }) => {
+        return {
+          imageUrl: urlFor(image.asset).url(),
+          alt: image.alt
+        }
+      }) || [],
+    },
+
     gallery: sanityData.gallery?.map((image: { asset: any, alt: string }) => {
       return {
         imageUrl: urlFor(image.asset).url(),

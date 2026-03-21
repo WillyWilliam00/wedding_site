@@ -28,7 +28,7 @@ export default function ChiesaSection({ data }: ChiesaSectionProps) {
     const locationCoordinates = data.chiesa.coordinates;
 
     return (
-        <section id="chiesa" className="relative h-[90vh] md:h-screen w-full overflow-hidden flex items-center justify-around px-26">
+        <section id="chiesa" className="relative h-[90vh] md:h-screen w-full overflow-hidden flex items-center justify-around px-12 lg:px-26">
             {/* Immersive Background */}
             <div className="absolute inset-0 z-0">
                 <motion.div
@@ -83,7 +83,7 @@ export default function ChiesaSection({ data }: ChiesaSectionProps) {
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="text-white/90 text-base md:text-lg mb-8 leading-relaxed font-light"
+                            className="text-white/90 text-sm md:text-lg mb-8 leading-relaxed font-light"
                         >
                             {data.chiesa.description}
                         </motion.p>

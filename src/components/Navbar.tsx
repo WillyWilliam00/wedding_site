@@ -28,11 +28,28 @@ export default function Navbar({ data }: NavbarProps) {
     }, []);
 
     const handleLinkClick = (href: string) => {
-        const el = document.querySelector(href);
-        if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        // Chiudi subito il menu (su mobile può bloccare/alterare lo scroll)
         setIsMobileOpen(false);
+
+        const id =  href.slice(1) 
+
+        // La hero è `sticky top-0`: scrollare "verso l'elemento" spesso non cambia nulla.
+        // Per tornare alla hero serve andare all'inizio del documento.
+        if (id === 'hero') {
+            requestAnimationFrame(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            return;
+        }
+
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        // Scroll più affidabile di scrollIntoView con layout sticky/fixed
+        requestAnimationFrame(() => {
+            const top = el.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top, behavior: 'smooth' });
+        });
     };
 
     const groomFirst = data.couple_names.groom.split(' ')[0];

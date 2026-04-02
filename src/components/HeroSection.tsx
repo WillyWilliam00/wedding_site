@@ -95,7 +95,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
                 style={{ opacity: contentOpacity }}
-                className="relative z-20 w-full flex justify-end pb-12 pe-12"
+                className="relative z-20 w-full pb-12 px-4 md:flex md:justify-end md:pe-12"
             >
                 <div className="bg-background/10 backdrop-blur-md border border-primary/20 rounded-2xl px-8 py-4 md:py-6 shadow-2xl flex gap-8 md:gap-16">
                     {[

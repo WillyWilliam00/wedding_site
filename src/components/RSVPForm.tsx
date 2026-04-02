@@ -169,7 +169,7 @@ export default function RSVPForm({ data }: RSVPFormProps) {
             </motion.div>
 
             {/* Card del Form */}
-            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-3xl w-full bg-white rounded-3xl shadow-2xl p-8 md:p-14 border border-gray-50 relative overflow-hidden">
+            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-6xl w-full bg-white rounded-3xl shadow-2xl p-8 md:p-14 border border-gray-50 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-primary/20 via-primary to-primary/20" />
 
                 <div className="flex flex-col items-center mb-12">
@@ -193,7 +193,7 @@ export default function RSVPForm({ data }: RSVPFormProps) {
                                 <div className="flex items-center justify-between bg-gray-50/80 border border-gray-100 rounded-2xl px-6 py-5">
                                     <div className="hidden sm:block">
                                         <p className="text-sm font-bold text-gray-700">Ospiti totali</p>
-                                        <p className="text-xs text-gray-400">Aggiungi i membri del tuo gruppo</p>
+                                        <p className="text-xs text-gray-400">Aggiungi gli invitati presenti nell'invito</p>
                                     </div>
                                     <div className="flex items-center gap-4 bg-white p-1 rounded-full border border-gray-200 shadow-sm mx-auto sm:mx-0">
                                         <button
@@ -301,6 +301,7 @@ export default function RSVPForm({ data }: RSVPFormProps) {
                                                     </form.Field>
                                                 </div>
 
+                                                <div className='flex flex-col md:flex-row gap-6 justify-around'>
                                                 <div className="space-y-4">
                                                     <div className="flex items-center gap-2 text-gray-600">
                                                         <ChefHat className="w-4 h-4 text-primary" />
@@ -440,6 +441,7 @@ export default function RSVPForm({ data }: RSVPFormProps) {
                                                             </AnimatePresence>
                                                         )}
                                                     </form.Field>
+                                                </div>
                                                 </div>
                                             </motion.div>
                                         ))}

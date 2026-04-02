@@ -20,10 +20,33 @@ interface NavbarProps {
 export default function Navbar({ data }: NavbarProps) {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState<string | null>(null);
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+              const visibleEntries = entries 
+              .filter((entry) => entry.isIntersecting )
+              if(visibleEntries[0]) {
+                const id = visibleEntries[0].target.id;
+                setActiveSection(id)
+              }
+            },
+            {
+              root: null,
+              threshold: [0.3, 0.5, 0.7]
+            }
+          )
+          data.navbar.links.forEach(({href}) => {
+            const id = href.slice(1)
+            const el = document.getElementById(id);
+            if (el) {
+                observer.observe(el);
+            }
+          })
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -81,7 +104,7 @@ export default function Navbar({ data }: NavbarProps) {
                             href={link.href}
                             onClick={(e) => { e.preventDefault(); handleLinkClick(link.href); }}
                             className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 hover:text-primary ${isScrolled ? 'text-gray-700' : 'text-white/90'
-                                }`}
+                                } ${activeSection === link.href.slice(1) ? 'text-primary' : 'text-gray-700'}`}
                         >
                             {link.label}
                         </a>
@@ -114,7 +137,7 @@ export default function Navbar({ data }: NavbarProps) {
                                 key={index}
                                 href={link.href}
                                 onClick={() => { handleLinkClick(link.href); }}
-                                className="block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-surface hover:text-primary transition-colors"
+                                className={`block px-4 py-3 rounded-lg text-gray-700 font-medium hover:bg-surface hover:text-primary transition-colors ${activeSection === link.href.slice(1) ? 'text-primary' : 'text-gray-700'}`}
                             >
                                 {link.label}
                             </a>

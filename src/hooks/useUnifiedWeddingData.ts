@@ -128,6 +128,12 @@ export function useUnifiedWeddingData() {
         options: ['Glutine', 'Lattosio', 'Crostacei', 'Frutta a guscio', 'Uova', 'Pesce', 'Soia'],
         other: { label: 'Altro', placeholder: 'Specifica...' }
       },
+      foodPreferences: {
+        title: sanityData.contactSettings?.rsvpLabels?.foodPreferencesTitle || 'Preferenze Alimentari',
+        subtitle: 'Seleziona eventuali preferenze alimentari',
+        options: ['Vegetariano', 'Vegano', 'Senza glutine', 'Senza lattosio', 'Senza pesce', 'Senza uova', 'Senza soia'],
+        other: { label: 'Altro', placeholder: 'Specifica...' }
+      },
       submit_button: sanityData.contactSettings?.rsvpLabels?.submitButton || 'Invia Conferma',
       success_message: sanityData.contactSettings?.successMessage || '',
       error_message: 'Errore durante l\'invio. Riprova più tardi.'

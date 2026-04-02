@@ -54,6 +54,7 @@ export const contactSettings = defineType({
         defineField({ name: 'surnameLabel', type: 'string', title: 'Surname Input Label', initialValue: 'Cognome' }),
         defineField({ name: 'attendanceLabel', type: 'string', title: 'Attendance Question', initialValue: 'Parteciperai?' }),
         defineField({ name: 'allergensTitle', type: 'string', title: 'Allergens Title', initialValue: 'Allergie e Intolleranze' }),
+        defineField({ name: 'foodPreferencesTitle', type: 'string', title: 'Food Preferences Title', initialValue: 'Preferenze Alimentari' }),
         defineField({ name: 'submitButton', type: 'string', title: 'Submit Button Label', initialValue: 'Invia Conferma' }),
       ],
     }),

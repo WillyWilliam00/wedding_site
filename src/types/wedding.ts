@@ -127,6 +127,15 @@ export interface UnifiedWeddingData {
         placeholder: string;
       };
     };
+    foodPreferences: {
+      title: string;
+      subtitle: string;
+      options: string[];
+      other: {
+        label: string;
+        placeholder: string;
+      };
+    };
     submit_button: string;
     success_message: string;
     error_message: string;
@@ -283,6 +292,7 @@ export interface ContactSettingsData {
     surnameLabel: string;
     attendanceLabel: string;
     allergensTitle: string;
+    foodPreferencesTitle: string;
     submitButton: string;
   };
 }

@@ -12,6 +12,9 @@ interface GuestEntry {
     allergens: string[];
     otherAllergen: string;
     showOther: boolean;
+    foodPreferences: string[];
+    otherFoodPreference: string;
+    showOtherFoodPreference: boolean;
 }
 
 interface RSVPFormProps {
@@ -24,6 +27,15 @@ interface RSVPFormProps {
                 surname: string;
             };
             allergens: {
+                title: string;
+                subtitle: string;
+                options: string[];
+                other: {
+                    label: string;
+                    placeholder: string;
+                };
+            };
+            foodPreferences: {
                 title: string;
                 subtitle: string;
                 options: string[];
@@ -49,6 +61,9 @@ const makeGuest = (): GuestEntry => ({
     allergens: [],
     otherAllergen: '',
     showOther: false,
+    foodPreferences: [],
+    otherFoodPreference: '',
+    showOtherFoodPreference: false,
 });
 
 export default function RSVPForm({ data }: RSVPFormProps) {
@@ -109,9 +124,13 @@ export default function RSVPForm({ data }: RSVPFormProps) {
                     group_id: groupData.id,
                     name: g.name.trim(),
                     surname: g.surname.trim(),
-                    dietary_info: {
+                    allergens: {
                         allergens: g.allergens,
                         other_allergen: g.showOther ? g.otherAllergen.trim() : null,
+                    },
+                    food_preferences: {
+                        preferences: g.foodPreferences,
+                        other: g.showOtherFoodPreference ? g.otherFoodPreference.trim() : null,
                     }
                 }))
 
@@ -287,6 +306,7 @@ export default function RSVPForm({ data }: RSVPFormProps) {
                                                         <ChefHat className="w-4 h-4 text-primary" />
                                                         <span className="text-xs font-bold uppercase tracking-widest">{data.rsvp.allergens.title}</span>
                                                     </div>
+                                                    
 
                                                     <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
                                                         {data.rsvp.allergens.options.map((opt) => (
@@ -340,6 +360,76 @@ export default function RSVPForm({ data }: RSVPFormProps) {
                                                                                     value={otherField.state.value ?? ''}
                                                                                     onChange={(e) => otherField.handleChange(e.target.value)}
                                                                                     placeholder={data.rsvp.allergens.other.placeholder}
+                                                                                    className="w-full mt-2 p-4 rounded-2xl bg-white border border-gray-100 text-xs text-gray-700 outline-none focus:ring-1 focus:ring-primary/20 transition-all resize-none shadow-inner"
+                                                                                    rows={3}
+                                                                                />
+                                                                            </motion.div>
+                                                                        )}
+                                                                    </form.Field>
+                                                                )}
+                                                            </AnimatePresence>
+                                                        )}
+                                                    </form.Field>
+                                                </div>
+                                                <div className="space-y-4">
+                                                    <div className="flex items-center gap-2 text-gray-600">
+                                                        <ChefHat className="w-4 h-4 text-primary" />
+                                                        <span className="text-xs font-bold uppercase tracking-widest">{data.rsvp.foodPreferences.title}</span>
+                                                    </div>
+                                                    
+
+                                                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                                                        {data.rsvp.foodPreferences.options.map((opt) => (
+                                                            <form.Field name={`guests[${i}].foodPreferences`} key={opt}>
+                                                                {(field) => (
+                                                                    <label className="flex items-center gap-3 cursor-pointer group select-none bg-white/50 p-3 rounded-xl border border-transparent hover:border-primary/10 transition-all">
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            checked={(field.state.value ?? []).includes(opt)}
+                                                                            onChange={() => {
+                                                                                const current = (field.state.value ?? []);
+                                                                                field.handleChange(
+                                                                                    current.includes(opt)
+                                                                                        ? current.filter(o => o !== opt)
+                                                                                        : [...current, opt]
+                                                                                );
+                                                                            }}
+                                                                            className="w-4 h-4 rounded-md border-gray-300 text-primary focus:ring-primary accent-primary"
+                                                                        />
+                                                                        <span className="text-xs font-medium text-gray-600 group-hover:text-gray-900 transition-colors">{opt}</span>
+                                                                    </label>
+                                                                )}
+                                                            </form.Field>
+                                                        ))}
+
+                                                        <form.Field name={`guests[${i}].showOtherFoodPreference`}>
+                                                            {(field) => (
+                                                                <label className="flex items-center gap-3 cursor-pointer group select-none bg-white p-3 rounded-xl border border-primary/5 hover:border-primary transition-all">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={field.state.value ?? false}
+                                                                        onChange={(e) => field.handleChange(e.target.checked)}
+                                                                        className="w-4 h-4 rounded-md border-gray-300 text-primary accent-primary"
+                                                                    />
+                                                                    <span className="text-xs font-bold text-primary uppercase tracking-tighter">{data.rsvp.allergens.other.label}</span>
+                                                                </label>
+                                                            )}
+                                                        </form.Field>
+                                                    </div>
+
+                                                    {/* Textarea Altro condizionale */}
+                                                    <form.Field name={`guests[${i}].showOtherFoodPreference`}>
+                                                        {(showOtherField) => (
+                                                            <AnimatePresence>
+                                                                {showOtherField.state.value && (
+                                                                    <form.Field name={`guests[${i}].otherFoodPreference`}>
+                                                                        {(otherField) => (
+                                                                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                                                                                <textarea
+                                                                                    id={otherField.name}
+                                                                                    value={otherField.state.value ?? ''}
+                                                                                    onChange={(e) => otherField.handleChange(e.target.value)}
+                                                                                    placeholder={data.rsvp.foodPreferences.other.placeholder}
                                                                                     className="w-full mt-2 p-4 rounded-2xl bg-white border border-gray-100 text-xs text-gray-700 outline-none focus:ring-1 focus:ring-primary/20 transition-all resize-none shadow-inner"
                                                                                     rows={3}
                                                                                 />

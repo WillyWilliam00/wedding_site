@@ -131,7 +131,7 @@ export function useUnifiedWeddingData() {
       foodPreferences: {
         title: sanityData.contactSettings?.rsvpLabels?.foodPreferencesTitle || 'Preferenze Alimentari',
         subtitle: 'Seleziona eventuali preferenze alimentari',
-        options: ['Vegetariano', 'Vegano', 'Senza glutine', 'Senza lattosio', 'Senza pesce', 'Senza uova', 'Senza soia'],
+        options: ['Vegetariano', 'Vegano'],
         other: { label: 'Altro', placeholder: 'Specifica...' }
       },
       submit_button: sanityData.contactSettings?.rsvpLabels?.submitButton || 'Invia Conferma',

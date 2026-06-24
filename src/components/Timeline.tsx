@@ -58,7 +58,7 @@ export default function Timeline({ data }: TimelineProps) {
                     </div>
 
                     {/* Timeline Events Container */}
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-12 md:gap-4 relative">
+                    <div className="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-4 relative">
                         {data.timeline.events.map((event, index) => (
                             <motion.div
                                 key={index}

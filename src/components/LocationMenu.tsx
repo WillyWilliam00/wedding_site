@@ -37,7 +37,7 @@ export default function LocationMenu({ data }: LocationMenuProps) {
 
 
     return (
-        <section id="location" className="relative h-[90vh] md:h-screen w-full overflow-hidden flex items-center justify-around m px-6">
+        <section id="location" className="relative h-[90vh] lg:h-screen w-full overflow-hidden flex items-center justify-around m px-6">
             {/* Immersive Background */}
             <div className="absolute inset-0 z-0">
                 <motion.div
@@ -53,8 +53,8 @@ export default function LocationMenu({ data }: LocationMenuProps) {
                     />
                 </motion.div>
                 {/* Overlay for better readability */}
-                <div className="absolute inset-0 bg-black/40 md:bg-black/20" />
-                <div className="absolute inset-0 bg-linear-to-r from-black/50 via-transparent to-transparent hidden md:block" />
+                <div className="absolute inset-0 bg-black/40 lg:bg-black/20" />
+                <div className="absolute inset-0 bg-linear-to-r from-black/50 via-transparent to-transparent hidden lg:block" />
             </div>
 
             <div className="max-w-7xl  w-full relative z-10">
@@ -64,7 +64,7 @@ export default function LocationMenu({ data }: LocationMenuProps) {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="w-full max-w-lg bg-white/10 backdrop-blur-xl border border-white/20 p-8 md:p-12 rounded-3xl shadow-2xl overflow-hidden relative"
+                    className="w-full max-w-lg bg-white/10 backdrop-blur-xl border border-white/20 p-8 lg:p-12 rounded-3xl shadow-2xl overflow-hidden relative"
                 >
                     {/* Decorative element */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl -mr-16 -mt-16 rounded-full" />
@@ -74,7 +74,7 @@ export default function LocationMenu({ data }: LocationMenuProps) {
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="text-primary font-medium tracking-[0.2em] uppercase text-xs md:text-sm mb-4 block"
+                            className="text-primary font-medium tracking-[0.2em] uppercase text-xs lg:text-sm mb-4 block"
                         >
                             La Nostra Scelta
                         </motion.span>
@@ -83,7 +83,7 @@ export default function LocationMenu({ data }: LocationMenuProps) {
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="text-3xl md:text-5xl lg:text-6xl font-heading text-white mb-6 leading-tight"
+                            className="text-3xl lg:text-5xl lg:text-6xl font-heading text-white mb-6 leading-tight"
                         >
                             {data.location.name}
                         </motion.h2>
@@ -92,7 +92,7 @@ export default function LocationMenu({ data }: LocationMenuProps) {
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="text-white/80 text-base md:text-lg mb-8 leading-relaxed font-light"
+                            className="text-white/80 text-base lg:text-lg mb-8 leading-relaxed font-light"
                         >
                             {data.location.description}
                         </motion.p>
@@ -111,8 +111,8 @@ export default function LocationMenu({ data }: LocationMenuProps) {
                                     <MapPinned className="w-5 h-5" />
                                 </div>
                                 <div className="text-left">
-                                    <span className="text-xs md:text-sm text-white/50 block uppercase tracking-wider">Indirizzo - mostra mappa</span>
-                                    <span className="text-xs md:text-sm font-medium">{data.location.address}</span>
+                                    <span className="text-xs lg:text-sm text-white/50 block uppercase tracking-wider">Indirizzo - mostra mappa</span>
+                                    <span className="text-xs lg:text-sm font-medium">{data.location.address}</span>
                                 </div>
                             </button>
                         </motion.div>
@@ -166,7 +166,7 @@ export default function LocationMenu({ data }: LocationMenuProps) {
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="fixed inset-4 md:inset-10 lg:inset-20 bg-white rounded-3xl shadow-2xl z-70 overflow-hidden flex flex-col"
+                            className="fixed inset-4 lg:inset-10 lg:inset-20 bg-white rounded-3xl shadow-2xl z-70 overflow-hidden flex flex-col"
                         >
                             <div className="flex items-center justify-between p-6 border-b border-gray-100">
                                 <div>
@@ -236,11 +236,11 @@ export default function LocationMenu({ data }: LocationMenuProps) {
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="fixed inset-4 md:inset-8 lg:inset-16 bg-white rounded-3xl shadow-2xl z-70 overflow-hidden flex flex-col"
+                            className="fixed inset-4 lg:inset-8 lg:inset-16 bg-white rounded-3xl shadow-2xl z-70 overflow-hidden flex flex-col"
                         >
                             <div className="flex items-center justify-between p-8 border-b border-gray-100 bg-background">
                                 <div>
-                                    <h2 className="text-4xl md:text-5xl font-heading text-gray-900">
+                                    <h2 className="text-4xl lg:text-5xl font-heading text-gray-900">
                                         {data.menu.title}
                                     </h2>
                                     <div className="w-20 h-1 bg-primary mt-4 rounded-full" />
@@ -253,9 +253,9 @@ export default function LocationMenu({ data }: LocationMenuProps) {
                                 </button>
                             </div>
 
-                            <div className="flex-1 overflow-y-auto p-8 md:p-12 bg-linear-to-b from-background to-white">
+                            <div className="flex-1 overflow-y-auto p-8 lg:p-12 bg-linear-to-b from-background to-white">
                                 <div className="max-w-4xl mx-auto">
-                                    <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+                                    <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
                                         {data.menu.sections.map((section, index) => (
                                             <motion.div
                                                 key={index}
@@ -263,7 +263,7 @@ export default function LocationMenu({ data }: LocationMenuProps) {
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: index * 0.1 }}
                                             >
-                                                <h3 className="text-2xl md:text-3xl font-heading text-primary mb-8 flex items-center gap-4">
+                                                <h3 className="text-2xl lg:text-3xl font-heading text-primary mb-8 flex items-center gap-4">
                                                     <span className="w-8 h-px bg-primary/30" />
                                                     {section.name}
                                                     <span className="flex-1 h-px bg-primary/30" />

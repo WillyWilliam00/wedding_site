@@ -28,7 +28,7 @@ export default function ChiesaSection({ data }: ChiesaSectionProps) {
     const locationCoordinates = data.chiesa.coordinates;
 
     return (
-        <section id="chiesa" className="relative h-[90vh] md:h-screen w-full overflow-hidden flex items-center justify-around px-12 lg:px-26">
+        <section id="chiesa" className="relative h-[90vh] lg:h-screen w-full overflow-hidden flex items-center justify-around px-12 lg:px-26">
             {/* Immersive Background */}
             <div className="absolute inset-0 z-0">
                 <motion.div
@@ -44,8 +44,8 @@ export default function ChiesaSection({ data }: ChiesaSectionProps) {
                     />
                 </motion.div>
                 {/* Overlay for better readability - flipped gradient to right */}
-                <div className="absolute inset-0 bg-black/40 md:bg-black/30" />
-                <div className="absolute inset-0 bg-linear-to-l from-black/60 via-black/20 to-transparent hidden md:block" />
+                <div className="absolute inset-0 bg-black/40 lg:bg-black/30" />
+                <div className="absolute inset-0 bg-linear-to-l from-black/60 via-black/20 to-transparent hidden lg:block" />
             </div>
 
             <div className="w-full relative z-10 flex justify-end">
@@ -55,7 +55,7 @@ export default function ChiesaSection({ data }: ChiesaSectionProps) {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="w-full max-w-xl bg-black/30 backdrop-blur-xl border border-white/30 p-8 md:p-12 rounded-4xl shadow-2xl overflow-hidden relative"
+                    className="w-full max-w-xl bg-black/30 backdrop-blur-xl border border-white/30 p-8 lg:p-12 rounded-4xl shadow-2xl overflow-hidden relative"
                 >
                     {/* Decorative element - different color and position */}
                     <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/10 blur-3xl -ml-20 -mb-20 rounded-full" />
@@ -65,7 +65,7 @@ export default function ChiesaSection({ data }: ChiesaSectionProps) {
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="text-primary font-medium tracking-[0.2em] italic text-sm md:text-base mb-4 block"
+                            className="text-primary font-medium tracking-[0.2em] italic text-sm lg:text-base mb-4 block"
                         >
                             La Nostra Cerimonia
                         </motion.span>
@@ -74,7 +74,7 @@ export default function ChiesaSection({ data }: ChiesaSectionProps) {
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="text-3xl md:text-5xl lg:text-5xl font-heading text-white mb-6 leading-tight"
+                            className="text-3xl lg:text-5xl lg:text-5xl font-heading text-white mb-6 leading-tight"
                         >
                             {data.chiesa.name}
                         </motion.h2>
@@ -83,7 +83,7 @@ export default function ChiesaSection({ data }: ChiesaSectionProps) {
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="text-white/90 text-sm md:text-lg mb-8 leading-relaxed font-light"
+                            className="text-white/90 text-sm lg:text-lg mb-8 leading-relaxed font-light"
                         >
                             {data.chiesa.description}
                         </motion.p>
@@ -102,8 +102,8 @@ export default function ChiesaSection({ data }: ChiesaSectionProps) {
                                     <MapPinned className="w-5 h-5" />
                                 </div>
                                 <div className="text-left">
-                                    <span className="text-xs md:text-sm text-white/70 block uppercase tracking-wider">Indirizzo - mostra mappa</span>
-                                    <span className="text-sm md:text-base font-medium">{data.chiesa.address}</span>
+                                    <span className="text-xs lg:text-sm text-white/70 block uppercase tracking-wider">Indirizzo - mostra mappa</span>
+                                    <span className="text-sm lg:text-base font-medium">{data.chiesa.address}</span>
                                 </div>
                             </button>
                         </motion.div>
@@ -152,7 +152,7 @@ export default function ChiesaSection({ data }: ChiesaSectionProps) {
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="fixed inset-4 md:inset-10 lg:inset-20 bg-white rounded-3xl shadow-2xl z-70 overflow-hidden flex flex-col"
+                            className="fixed inset-4 lg:inset-10 lg:inset-20 bg-white rounded-3xl shadow-2xl z-70 overflow-hidden flex flex-col"
                         >
                             <div className="flex items-center justify-between p-6 border-b border-gray-100">
                                 <div>

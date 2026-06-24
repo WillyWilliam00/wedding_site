@@ -74,7 +74,7 @@ export default function Timeline({ data }: TimelineProps) {
                                     className="z-10 bg-white border-2 border-primary text-primary w-16 h-16 md:w-24 md:h-24 rounded-full flex flex-col items-center justify-center shadow-md mb-8 transition-colors group-hover:bg-primary group-hover:text-white"
                                 >
                                     <div className="mb-1">
-                                        {iconComponents[event.icon as keyof typeof iconComponents] || iconComponents.church}
+                                        {iconComponents[event.icon.toLowerCase() as keyof typeof iconComponents] || iconComponents.church}
                                     </div>
                                     <span className="text-[10px] md:text-sm font-bold tracking-wider">{event.time}</span>
                                 </motion.div>

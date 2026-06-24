@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Church, GlassWater, Utensils, Cake } from 'lucide-react';
+import { Church, GlassWater, Utensils, Cake, Music, ChefHat, Moon } from 'lucide-react';
 
 interface TimelineEvent {
     time: string;
@@ -23,6 +23,9 @@ const iconComponents = {
     glass: <GlassWater className="w-6 h-6" />,
     utensils: <Utensils className="w-6 h-6" />,
     cake: <Cake className="w-6 h-6" />,
+    music: <Music className="w-6 h-6" />,
+    chefhat: <ChefHat className="w-6 h-6" />,
+    moon: <Moon className="w-6 h-6" />
 };
 
 export default function Timeline({ data }: TimelineProps) {

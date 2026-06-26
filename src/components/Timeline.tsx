@@ -33,22 +33,22 @@ export default function Timeline({data}: TimelineProps) {
   return (
     <section
       id="timeline"
-      className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-24 bg-linear-to-tr from-surface to-primary/30 overflow-hidden"
+      className="section section-content bg-linear-to-tr from-surface to-primary/30 overflow-hidden"
     >
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="">
         <motion.h2
           initial={{opacity: 0, y: 30}}
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true, margin: '-100px'}}
           transition={{duration: 0.6}}
-          className="text-3xl md:text-5xl text-center mb-16 md:mb-24 font-heading text-gray-800"
+          className="section-title-center"
         >
           {data.timeline.title}
         </motion.h2>
 
-        <div className="relative">
-          {/* Horizontal Connector Line */}
-          <div className="absolute top-12 left-[10%] right-[10%] h-0.5 bg-primary/30 hidden md:block">
+        <div className="relative max-w-xl mx-auto xl:max-w-none">
+          {/* Horizontal Connector Line (desktop) */}
+          <div className="absolute top-12 left-[5%] right-[5%] h-0.5 bg-primary/30 hidden xl:block">
             <motion.div
               initial={{width: 0}}
               whileInView={{width: '100%'}}
@@ -59,7 +59,7 @@ export default function Timeline({data}: TimelineProps) {
           </div>
 
           {/* Timeline Events Container */}
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-4 relative">
+          <div className="flex flex-col xl:flex-row justify-between items-start gap-12 xl:gap-4 relative">
             {data.timeline.events.map((event, index) => (
               <motion.div
                 key={index}
@@ -67,12 +67,25 @@ export default function Timeline({data}: TimelineProps) {
                 whileInView={{opacity: 1, y: 0}}
                 viewport={{once: true, margin: '-50px'}}
                 transition={{duration: 0.6, delay: index * 0.2}}
-                className="flex flex-col items-center text-center w-full md:w-1/3 group"
+                className="flex flex-row xl:flex-col items-start xl:items-center gap-4 xl:gap-0 text-left xl:text-center w-full xl:w-1/3 group relative"
               >
+                {/* Vertical segment between bubbles (mobile only) */}
+                {index < data.timeline.events.length - 1 && (
+                  <div className="absolute left-8 md:left-12 top-8 md:top-12 -translate-x-1/2 w-0.5 -bottom-12 bg-primary/30 xl:hidden z-0 overflow-hidden">
+                    <motion.div
+                      initial={{height: 0}}
+                      whileInView={{height: '100%'}}
+                      viewport={{once: true}}
+                      transition={{duration: 1.5, ease: 'easeInOut', delay: index * 0.2}}
+                      className="w-full bg-primary"
+                    />
+                  </div>
+                )}
+
                 {/* Time Bubble */}
                 <motion.div
                   whileHover={{scale: 1.1}}
-                  className="z-10 bg-white border-2 border-primary text-primary w-16 h-16 md:w-24 md:h-24 rounded-full flex flex-col items-center justify-center shadow-md mb-8 transition-colors group-hover:bg-primary group-hover:text-white"
+                  className="z-10 shrink-0 bg-white border-2 border-primary text-primary w-16 h-16 md:w-24 md:h-24 rounded-full flex flex-col items-center justify-center shadow-md mb-0 xl:mb-8 transition-colors group-hover:bg-primary group-hover:text-white"
                 >
                   <div className="mb-1">
                     {iconComponents[event.icon.toLowerCase() as keyof typeof iconComponents] ||
@@ -84,14 +97,12 @@ export default function Timeline({data}: TimelineProps) {
                 </motion.div>
 
                 {/* Content */}
-                <div className="px-4">
-                  <h3 className="text-xl md:text-2xl font-heading text-primary mb-2">
-                    {event.event}
-                  </h3>
-                  <p className="font-semibold text-base md:text-lg mb-2 text-secondary">
+                <div className="pt-1 xl:pt-0 px-0 xl:px-4">
+                  <h3 className="section-heading-sm text-primary mb-2">{event.event}</h3>
+                  <p className="font-semibold text-sm md:text-base mb-2 text-secondary">
                     {event.description}
                   </p>
-                  <p className="text-gray-600 text-xs md:text-sm leading-relaxed max-w-[250px] mx-auto ">
+                  <p className="section-body max-w-none xl:max-w-[250px] xl:mx-auto">
                     {event.long_description}
                   </p>
                 </div>

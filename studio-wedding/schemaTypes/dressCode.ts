@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export const dressCode = defineType({
   name: 'dressCode',
@@ -30,8 +30,8 @@ export const dressCode = defineType({
         {
           type: 'object',
           fields: [
-            { name: 'name', type: 'string', title: 'Color Name' },
-            { name: 'hex', type: 'string', title: 'Hex Code' },
+            {name: 'name', type: 'string', title: 'Color Name'},
+            {name: 'hex', type: 'string', title: 'Hex Code'},
           ],
         },
       ],
@@ -52,7 +52,7 @@ export const dressCode = defineType({
       name: 'avoidColors',
       title: 'Colors to Avoid',
       type: 'array',
-      of: [{ type: 'string' }],
+      of: [{type: 'string'}],
     }),
   ],
 })

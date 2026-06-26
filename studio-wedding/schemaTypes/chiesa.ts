@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export const chiesa = defineType({
   name: 'chiesa',
@@ -30,7 +30,7 @@ export const chiesa = defineType({
       name: 'image',
       title: 'Immagine di sfondo',
       type: 'image',
-      options: { hotspot: true },
+      options: {hotspot: true},
     }),
     defineField({
       name: 'coordinates',
@@ -47,7 +47,7 @@ export const chiesa = defineType({
           type: 'image',
           name: 'image',
           title: 'Immagine',
-          options: { hotspot: true },
+          options: {hotspot: true},
           fields: [
             defineField({
               name: 'alt',

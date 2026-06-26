@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export const chiSiamo = defineType({
   name: 'chiSiamo',
@@ -13,7 +13,7 @@ export const chiSiamo = defineType({
     }),
     defineField({
       name: 'subtitle',
-      title: 'Main Heading (e.g. La nostra storia d\'amore)',
+      title: "Main Heading (e.g. La nostra storia d'amore)",
       type: 'string',
       initialValue: "La nostra storia d'amore",
     }),
@@ -27,13 +27,13 @@ export const chiSiamo = defineType({
       name: 'badge',
       title: 'Small Badge Text (e.g. Per sempre insieme)',
       type: 'string',
-      initialValue: "Per sempre insieme",
+      initialValue: 'Per sempre insieme',
     }),
     defineField({
       name: 'image',
       title: 'Image',
       type: 'image',
-      options: { hotspot: true },
+      options: {hotspot: true},
     }),
   ],
 })

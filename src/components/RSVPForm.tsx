@@ -1,484 +1,547 @@
-import { useForm } from '@tanstack/react-form';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChefHat, Send, Mail, Phone, Plus, Minus, Trash2 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import toast from 'react-hot-toast';
+import {useForm} from '@tanstack/react-form'
+import {motion, AnimatePresence} from 'framer-motion'
+import {ChefHat, Send, Mail, Phone, Plus, Minus, Trash2} from 'lucide-react'
+import {supabase} from '../lib/supabase'
+import toast from 'react-hot-toast'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface GuestEntry {
-    name: string;
-    surname: string;
-    allergens: string[];
-    otherAllergen: string;
-    showOther: boolean;
-    foodPreferences: string[];
-    otherFoodPreference: string;
-    showOtherFoodPreference: boolean;
+  name: string
+  surname: string
+  allergens: string[]
+  otherAllergen: string
+  showOther: boolean
+  foodPreferences: string[]
+  otherFoodPreference: string
+  showOtherFoodPreference: boolean
 }
 
 interface RSVPFormProps {
-    data: {
-        rsvp: {
-            title: string;
-            subtitle: string;
-            fields: {
-                name: string;
-                surname: string;
-            };
-            allergens: {
-                title: string;
-                subtitle: string;
-                options: string[];
-                other: {
-                    label: string;
-                    placeholder: string;
-                };
-            };
-            foodPreferences: {
-                title: string;
-                subtitle: string;
-                options: string[];
-                other: {
-                    label: string;
-                    placeholder: string;
-                };
-            };
-            submit_button: string;
-            success_message: string;
-        };
-        contact: {
-            title: string;
-            email: string;
-            phone: string;
-        };
-    };
+  data: {
+    rsvp: {
+      title: string
+      subtitle: string
+      fields: {
+        name: string
+        surname: string
+      }
+      allergens: {
+        title: string
+        subtitle: string
+        options: string[]
+        other: {
+          label: string
+          placeholder: string
+        }
+      }
+      foodPreferences: {
+        title: string
+        subtitle: string
+        options: string[]
+        other: {
+          label: string
+          placeholder: string
+        }
+      }
+      submit_button: string
+      success_message: string
+    }
+    contact: {
+      title: string
+      email: string
+      phone: string
+    }
+  }
 }
 
 const makeGuest = (): GuestEntry => ({
-    name: '',
-    surname: '',
-    allergens: [],
-    otherAllergen: '',
-    showOther: false,
-    foodPreferences: [],
-    otherFoodPreference: '',
-    showOtherFoodPreference: false,
-});
+  name: '',
+  surname: '',
+  allergens: [],
+  otherAllergen: '',
+  showOther: false,
+  foodPreferences: [],
+  otherFoodPreference: '',
+  showOtherFoodPreference: false,
+})
 
-export default function RSVPForm({ data }: RSVPFormProps) {
-    // 1. Inizializzazione del FORM con TanStack Form
-    const form = useForm({
-        defaultValues: {
-            guests: [makeGuest()] as GuestEntry[],
-        },
-        validators: {
-            onMount: ({ value }) => {
-                const isInvalid = value.guests.some(
-                    (guest) => !guest.name?.trim() || !guest.surname?.trim()
-                )
-                if (isInvalid) return 'Missing fields';
-                return undefined;
-            },
-            onChange: ({ value }) => {
-                // Controlliamo se tutti gli ospiti hanno nome e cognome
-                const isInvalid = value.guests.some(
-                    (guest) => !guest.name?.trim() || !guest.surname?.trim()
-                );
+export default function RSVPForm({data}: RSVPFormProps) {
+  // 1. Inizializzazione del FORM con TanStack Form
+  const form = useForm({
+    defaultValues: {
+      guests: [makeGuest()] as GuestEntry[],
+    },
+    validators: {
+      onMount: ({value}) => {
+        const isInvalid = value.guests.some(
+          (guest) => !guest.name?.trim() || !guest.surname?.trim(),
+        )
+        if (isInvalid) return 'Missing fields'
+        return undefined
+      },
+      onChange: ({value}) => {
+        // Controlliamo se tutti gli ospiti hanno nome e cognome
+        const isInvalid = value.guests.some(
+          (guest) => !guest.name?.trim() || !guest.surname?.trim(),
+        )
 
-                // Se ritorniamo una stringa, il form è "invalid" e canSubmit diventa false
-                if (isInvalid) return 'Missing fields';
+        // Se ritorniamo una stringa, il form è "invalid" e canSubmit diventa false
+        if (isInvalid) return 'Missing fields'
 
-                // Se ritorniamo undefined, il form è "valid" e canSubmit diventa true
-                return undefined;
-            },
-        },
-        onSubmit: async ({ value }) => {
-            try {
+        // Se ritorniamo undefined, il form è "valid" e canSubmit diventa true
+        return undefined
+      },
+    },
+    onSubmit: async ({value}) => {
+      try {
+        for (const guest of value.guests) {
+          const {data: existingGuest, error: checkError} = await supabase
+            .from('guests')
+            .select('id')
+            .ilike('name', guest.name.trim())
+            .ilike('surname', guest.surname.trim())
+            .maybeSingle()
 
-                for (const guest of value.guests) {
-                    const { data: existingGuest, error: checkError } = await supabase
-                        .from('guests')
-                        .select('id')
-                        .ilike('name', guest.name.trim())
-                        .ilike('surname', guest.surname.trim())
-                        .maybeSingle()
+          if (checkError) throw checkError
 
+          if (existingGuest) {
+            toast.error(`Ospite ${guest.name} ${guest.surname} già presente`)
+            return
+          }
+        }
+        const {data: groupData, error: groupError} = await supabase
+          .from('rsvp_groups')
+          .insert([{}])
+          .select('id')
+          .single()
 
-                    if (checkError) throw checkError;
+        if (groupError) throw groupError
 
-                    if (existingGuest) {
-                        toast.error(`Ospite ${guest.name} ${guest.surname} già presente`);
-                        return;
-                    }
-                }
-                const { data: groupData, error: groupError } = await supabase
-                    .from('rsvp_groups')
-                    .insert([{}])
-                    .select('id')
-                    .single()
+        const guestsToInsert = value.guests.map((g) => ({
+          group_id: groupData.id,
+          name: g.name.trim(),
+          surname: g.surname.trim(),
+          allergens: {
+            allergens: g.allergens,
+            other_allergen: g.showOther ? g.otherAllergen.trim() : null,
+          },
+          food_preferences: {
+            preferences: g.foodPreferences,
+            other: g.showOtherFoodPreference ? g.otherFoodPreference.trim() : null,
+          },
+        }))
 
-                if (groupError) throw groupError;
+        const {error: guestsError} = await supabase.from('guests').insert(guestsToInsert)
 
-                const guestsToInsert = value.guests.map(g => ({
-                    group_id: groupData.id,
-                    name: g.name.trim(),
-                    surname: g.surname.trim(),
-                    allergens: {
-                        allergens: g.allergens,
-                        other_allergen: g.showOther ? g.otherAllergen.trim() : null,
-                    },
-                    food_preferences: {
-                        preferences: g.foodPreferences,
-                        other: g.showOtherFoodPreference ? g.otherFoodPreference.trim() : null,
-                    }
-                }))
+        if (guestsError) throw guestsError
 
-                const { error: guestsError } = await supabase
-                    .from('guests')
-                    .insert(guestsToInsert)
+        toast.success(data.rsvp.success_message)
+        form.reset()
+      } catch (err) {
+        console.error("Errore durante l'invio RSVP:", err)
+        toast.error(
+          "Ops! C'è stato un errore tecnico. Per favore riprova o contattaci direttamente.",
+        )
+      }
+    },
+  })
 
-                if (guestsError) throw guestsError;
+  return (
+    <section
+      id="rsvp"
+      className="min-h-[70vh] flex flex-col items-center justify-center gap-6 px-6 py-20 bg-surface"
+    >
+      {/* Contatti */}
+      <motion.div
+        initial={{opacity: 0, y: 20}}
+        whileInView={{opacity: 1, y: 0}}
+        viewport={{once: true}}
+        className="max-w-2xl w-full mb-12"
+      >
+        <h3 className="text-xl md:text-2xl font-heading text-gray-800 text-center mb-6">
+          {data.contact.title}
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex items-center justify-center gap-3 bg-white/50 border border-primary/10 p-4 rounded-xl shadow-sm">
+            <Mail className="w-5 h-5 text-primary" />
+            <span className="text-sm md:text-base font-medium text-gray-700 italic">
+              {data.contact.email}
+            </span>
+          </div>
+          <div className="flex items-center justify-center gap-3 bg-white/50 border border-primary/10 p-4 rounded-xl shadow-sm">
+            <Phone className="w-5 h-5 text-primary" />
+            <span className="text-sm md:text-base font-medium text-gray-700 italic">
+              {data.contact.phone}
+            </span>
+          </div>
+        </div>
+      </motion.div>
 
+      {/* Card del Form */}
+      <motion.div
+        initial={{opacity: 0, y: 40}}
+        whileInView={{opacity: 1, y: 0}}
+        viewport={{once: true}}
+        className="max-w-6xl w-full bg-white rounded-3xl shadow-2xl p-8 md:p-14 border border-gray-50 relative overflow-hidden"
+      >
+        <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-primary/20 via-primary to-primary/20" />
 
+        <div className="flex flex-col items-center mb-12">
+          <h2 className="text-4xl md:text-5xl text-center mb-4 font-heading text-gray-800 tracking-tight">
+            {data.rsvp.title}
+          </h2>
+          <p className="text-center text-sm md:text-base text-gray-400 max-w-md italic leading-relaxed">
+            {data.rsvp.subtitle}
+          </p>
+        </div>
 
-                toast.success(data.rsvp.success_message);
-                form.reset();
-            } catch (err) {
-                console.error('Errore durante l\'invio RSVP:', err);
-                toast.error("Ops! C'è stato un errore tecnico. Per favore riprova o contattaci direttamente.");
-            }
-        },
-    });
-
-    return (
-        <section id="rsvp" className="min-h-[70vh] flex flex-col items-center justify-center gap-6 px-6 py-20 bg-surface">
-            {/* Contatti */}
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-2xl w-full mb-12">
-                <h3 className="text-xl md:text-2xl font-heading text-gray-800 text-center mb-6">{data.contact.title}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex items-center justify-center gap-3 bg-white/50 border border-primary/10 p-4 rounded-xl shadow-sm">
-                        <Mail className="w-5 h-5 text-primary" />
-                        <span className="text-sm md:text-base font-medium text-gray-700 italic">{data.contact.email}</span>
-                    </div>
-                    <div className="flex items-center justify-center gap-3 bg-white/50 border border-primary/10 p-4 rounded-xl shadow-sm">
-                        <Phone className="w-5 h-5 text-primary" />
-                        <span className="text-sm md:text-base font-medium text-gray-700 italic">{data.contact.phone}</span>
-                    </div>
-                </div>
-            </motion.div>
-
-            {/* Card del Form */}
-            <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-6xl w-full bg-white rounded-3xl shadow-2xl p-8 md:p-14 border border-gray-50 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-primary/20 via-primary to-primary/20" />
-
-                <div className="flex flex-col items-center mb-12">
-                    <h2 className="text-4xl md:text-5xl text-center mb-4 font-heading text-gray-800 tracking-tight">{data.rsvp.title}</h2>
-                    <p className="text-center text-sm md:text-base text-gray-400 max-w-md italic leading-relaxed">{data.rsvp.subtitle}</p>
-                </div>
-
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        form.handleSubmit();
-                    }}
-                    className="space-y-8"
-                >
-                    {/* 2. Gestione degli Ospiti come Array Field */}
-                    <form.Field name="guests" mode="array">
-                        {(guestsField) => (
-                            <div className="space-y-8">
-                                {/* Controllo numero ospiti */}
-                                <div className="flex items-center justify-between bg-gray-50/80 border border-gray-100 rounded-2xl px-6 py-5">
-                                    <div className="hidden sm:block">
-                                        <p className="text-sm font-bold text-gray-700">Ospiti totali</p>
-                                        <p className="text-xs text-gray-400">Aggiungi gli invitati presenti nell'invito</p>
-                                    </div>
-                                    <div className="flex items-center gap-4 bg-white p-1 rounded-full border border-gray-200 shadow-sm mx-auto sm:mx-0">
-                                        <button
-                                            type="button"
-                                            onClick={() => guestsField.removeValue(guestsField.state.value.length - 1)}
-                                            className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-primary hover:bg-primary/5 transition-all disabled:opacity-20"
-                                            disabled={guestsField.state.value.length <= 1}
-                                        >
-                                            <Minus className="w-5 h-5" />
-                                        </button>
-                                        <span className="w-8 text-center text-2xl font-bold font-heading text-primary">{guestsField.state.value.length}</span>
-                                        <button
-                                            type="button"
-                                            onClick={() => guestsField.pushValue(makeGuest())}
-                                            className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-primary hover:bg-primary/5 transition-all disabled:opacity-20"
-                                            disabled={guestsField.state.value.length >= 10}
-                                        >
-                                            <Plus className="w-5 h-5" />
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Lista Dinamica degli Ospiti */}
-                                <div className="space-y-6">
-                                    <AnimatePresence mode="popLayout">
-                                        {guestsField.state.value.map((_, i) => (
-                                            <motion.div
-                                                key={`guest-${i}`}
-                                                layout
-                                                initial={{ opacity: 0, scale: 0.95 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                exit={{ opacity: 0, scale: 0.95 }}
-                                                className="bg-gray-50/50 border border-gray-100 rounded-2xl p-6 md:p-8 space-y-6 relative group"
-                                            >
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary italic">#{i + 1}</div>
-                                                        <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Ospite</span>
-                                                    </div>
-                                                    {guestsField.state.value.length > 1 && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => guestsField.removeValue(i)}
-                                                            className="text-gray-300 hover:text-red-400 transition-colors p-1"
-                                                        >
-                                                            <Trash2 className="w-4 h-4" />
-                                                        </button>
-                                                    )}
-                                                </div>
-
-                                                {/* 3. Nested Fields per ogni proprietà dell'ospite */}
-                                                <div className="grid md:grid-cols-2 gap-6">
-                                                    <form.Field name={`guests[${i}].name`} validators={{
-                                                        onChange: ({ value }) => {
-                                                            if (!value) {
-                                                                return 'Il nome è obbligatorio';
-                                                            }
-                                                        }
-                                                    }}>
-                                                        {(field) => (
-                                                            <div className="space-y-1.5">
-                                                                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">{data.rsvp.fields.name} *</label>
-                                                                <input
-                                                                    id={field.name}
-                                                                    name={field.name}
-                                                                    value={field.state.value ?? ''}
-                                                                    onBlur={field.handleBlur}
-                                                                    onChange={(e) => field.handleChange(e.target.value)}
-                                                                    className="w-full bg-white border-b-2 border-gray-100 px-1 py-2 text-gray-800 focus:border-primary outline-none transition-colors placeholder:text-gray-200"
-                                                                    placeholder="es. Giulia"
-
-                                                                />
-                                                                {field.state.meta.errors.length > 0 && (
-                                                                    <span className="text-[10px] text-red-500 font-bold uppercase">{field.state.meta.errors[0]}</span>
-                                                                )}
-                                                            </div>
-                                                        )}
-                                                    </form.Field>
-
-                                                    <form.Field name={`guests[${i}].surname`} validators={{
-                                                        onChange: ({ value }) => {
-                                                            if (!value) {
-                                                                return 'Il cognome è obbligatorio';
-                                                            }
-                                                        }
-                                                    }}>
-                                                        {(field) => (
-                                                            <div className="space-y-1.5">
-                                                                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">{data.rsvp.fields.surname} *</label>
-                                                                <input
-                                                                    id={field.name}
-                                                                    name={field.name}
-                                                                    value={field.state.value ?? ''}
-                                                                    onBlur={field.handleBlur}
-                                                                    onChange={(e) => field.handleChange(e.target.value)}
-                                                                    className="w-full bg-white border-b-2 border-gray-100 px-1 py-2 text-gray-800 focus:border-primary outline-none transition-colors placeholder:text-gray-200"
-                                                                    placeholder="es. Bianchi"
-
-                                                                />
-                                                                {field.state.meta.errors.length > 0 && (
-                                                                    <span className="text-[10px] text-red-500 font-bold uppercase">{field.state.meta.errors[0]}</span>
-                                                                )}
-                                                            </div>
-                                                        )}
-                                                    </form.Field>
-                                                </div>
-
-                                                <div className='flex flex-col md:flex-row gap-6 justify-around'>
-                                                <div className="space-y-4">
-                                                    <div className="flex items-center gap-2 text-gray-600">
-                                                        <ChefHat className="w-4 h-4 text-primary" />
-                                                        <span className="text-xs font-bold uppercase tracking-widest">{data.rsvp.allergens.title}</span>
-                                                    </div>
-                                                    
-
-                                                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-                                                        {data.rsvp.allergens.options.map((opt) => (
-                                                            <form.Field name={`guests[${i}].allergens`} key={opt}>
-                                                                {(field) => (
-                                                                    <label className="flex items-center gap-3 cursor-pointer group select-none bg-white/50 p-3 rounded-xl border border-transparent hover:border-primary/10 transition-all">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            checked={(field.state.value ?? []).includes(opt)}
-                                                                            onChange={() => {
-                                                                                const current = (field.state.value ?? []);
-                                                                                field.handleChange(
-                                                                                    current.includes(opt)
-                                                                                        ? current.filter(o => o !== opt)
-                                                                                        : [...current, opt]
-                                                                                );
-                                                                            }}
-                                                                            className="w-4 h-4 rounded-md border-gray-300 text-primary focus:ring-primary accent-primary"
-                                                                        />
-                                                                        <span className="text-xs font-medium text-gray-600 group-hover:text-gray-900 transition-colors">{opt}</span>
-                                                                    </label>
-                                                                )}
-                                                            </form.Field>
-                                                        ))}
-
-                                                        <form.Field name={`guests[${i}].showOther`}>
-                                                            {(field) => (
-                                                                <label className="flex items-center gap-3 cursor-pointer group select-none bg-white p-3 rounded-xl border border-primary/5 hover:border-primary transition-all">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        checked={field.state.value ?? false}
-                                                                        onChange={(e) => field.handleChange(e.target.checked)}
-                                                                        className="w-4 h-4 rounded-md border-gray-300 text-primary accent-primary"
-                                                                    />
-                                                                    <span className="text-xs font-bold text-primary uppercase tracking-tighter">{data.rsvp.allergens.other.label}</span>
-                                                                </label>
-                                                            )}
-                                                        </form.Field>
-                                                    </div>
-
-                                                    {/* Textarea Altro condizionale */}
-                                                    <form.Field name={`guests[${i}].showOther`}>
-                                                        {(showOtherField) => (
-                                                            <AnimatePresence>
-                                                                {showOtherField.state.value && (
-                                                                    <form.Field name={`guests[${i}].otherAllergen`}>
-                                                                        {(otherField) => (
-                                                                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                                                                                <textarea
-                                                                                    id={otherField.name}
-                                                                                    value={otherField.state.value ?? ''}
-                                                                                    onChange={(e) => otherField.handleChange(e.target.value)}
-                                                                                    placeholder={data.rsvp.allergens.other.placeholder}
-                                                                                    className="w-full mt-2 p-4 rounded-2xl bg-white border border-gray-100 text-xs text-gray-700 outline-none focus:ring-1 focus:ring-primary/20 transition-all resize-none shadow-inner"
-                                                                                    rows={3}
-                                                                                />
-                                                                            </motion.div>
-                                                                        )}
-                                                                    </form.Field>
-                                                                )}
-                                                            </AnimatePresence>
-                                                        )}
-                                                    </form.Field>
-                                                </div>
-                                                <div className="space-y-4">
-                                                    <div className="flex items-center gap-2 text-gray-600">
-                                                        <ChefHat className="w-4 h-4 text-primary" />
-                                                        <span className="text-xs font-bold uppercase tracking-widest">{data.rsvp.foodPreferences.title}</span>
-                                                    </div>
-                                                    
-
-                                                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-                                                        {data.rsvp.foodPreferences.options.map((opt) => (
-                                                            <form.Field name={`guests[${i}].foodPreferences`} key={opt}>
-                                                                {(field) => (
-                                                                    <label className="flex items-center gap-3 cursor-pointer group select-none bg-white/50 p-3 rounded-xl border border-transparent hover:border-primary/10 transition-all">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            checked={(field.state.value ?? []).includes(opt)}
-                                                                            onChange={() => {
-                                                                                const current = (field.state.value ?? []);
-                                                                                field.handleChange(
-                                                                                    current.includes(opt)
-                                                                                        ? current.filter(o => o !== opt)
-                                                                                        : [...current, opt]
-                                                                                );
-                                                                            }}
-                                                                            className="w-4 h-4 rounded-md border-gray-300 text-primary focus:ring-primary accent-primary"
-                                                                        />
-                                                                        <span className="text-xs font-medium text-gray-600 group-hover:text-gray-900 transition-colors">{opt}</span>
-                                                                    </label>
-                                                                )}
-                                                            </form.Field>
-                                                        ))}
-
-                                                        <form.Field name={`guests[${i}].showOtherFoodPreference`}>
-                                                            {(field) => (
-                                                                <label className="flex items-center gap-3 cursor-pointer group select-none bg-white p-3 rounded-xl border border-primary/5 hover:border-primary transition-all">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        checked={field.state.value ?? false}
-                                                                        onChange={(e) => field.handleChange(e.target.checked)}
-                                                                        className="w-4 h-4 rounded-md border-gray-300 text-primary accent-primary"
-                                                                    />
-                                                                    <span className="text-xs font-bold text-primary uppercase tracking-tighter">{data.rsvp.allergens.other.label}</span>
-                                                                </label>
-                                                            )}
-                                                        </form.Field>
-                                                    </div>
-
-                                                    {/* Textarea Altro condizionale */}
-                                                    <form.Field name={`guests[${i}].showOtherFoodPreference`}>
-                                                        {(showOtherField) => (
-                                                            <AnimatePresence>
-                                                                {showOtherField.state.value && (
-                                                                    <form.Field name={`guests[${i}].otherFoodPreference`}>
-                                                                        {(otherField) => (
-                                                                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                                                                                <textarea
-                                                                                    id={otherField.name}
-                                                                                    value={otherField.state.value ?? ''}
-                                                                                    onChange={(e) => otherField.handleChange(e.target.value)}
-                                                                                    placeholder={data.rsvp.foodPreferences.other.placeholder}
-                                                                                    className="w-full mt-2 p-4 rounded-2xl bg-white border border-gray-100 text-xs text-gray-700 outline-none focus:ring-1 focus:ring-primary/20 transition-all resize-none shadow-inner"
-                                                                                    rows={3}
-                                                                                />
-                                                                            </motion.div>
-                                                                        )}
-                                                                    </form.Field>
-                                                                )}
-                                                            </AnimatePresence>
-                                                        )}
-                                                    </form.Field>
-                                                </div>
-                                                </div>
-                                            </motion.div>
-                                        ))}
-                                    </AnimatePresence>
-                                </div>
-                            </div>
-                        )}
-                    </form.Field>
-
-                    <form.Subscribe
-                        selector={(state) => [state.canSubmit, state.isSubmitting]}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            form.handleSubmit()
+          }}
+          className="space-y-8"
+        >
+          {/* 2. Gestione degli Ospiti come Array Field */}
+          <form.Field name="guests" mode="array">
+            {(guestsField) => (
+              <div className="space-y-8">
+                {/* Controllo numero ospiti */}
+                <div className="flex items-center justify-between bg-gray-50/80 border border-gray-100 rounded-2xl px-6 py-5">
+                  <div className="hidden sm:block">
+                    <p className="text-sm font-bold text-gray-700">Ospiti totali</p>
+                    <p className="text-xs text-gray-400">
+                      Aggiungi gli invitati presenti nell'invito
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-4 bg-white p-1 rounded-full border border-gray-200 shadow-sm mx-auto sm:mx-0">
+                    <button
+                      type="button"
+                      onClick={() => guestsField.removeValue(guestsField.state.value.length - 1)}
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-primary hover:bg-primary/5 transition-all disabled:opacity-20"
+                      disabled={guestsField.state.value.length <= 1}
                     >
-                        {([canSubmit, isSubmitting]) => (
-                            <button
-                                type="submit"
-                                disabled={!canSubmit}
-                                className={`w-full flex items-center justify-center gap-3 py-5 rounded-2xl text-white font-bold text-base shadow-xl transition-all active:scale-95 group ${!canSubmit
-                                    ? 'bg-gray-300 cursor-not-allowed shadow-none'
-                                    : 'bg-primary shadow-primary/20 hover:scale-[1.01] hover:shadow-2xl'
-                                    }`}
-                            >
-                                {isSubmitting ? (
-                                    <span className="animate-pulse italic text-sm">Inviando la conferma...</span>
-                                ) : (
-                                    <>
-                                        <span className="group-hover:translate-x-1 transition-transform">
-                                            {data.rsvp.submit_button}
-                                        </span>
-                                        <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-                                    </>
-                                )}
-                            </button>
-                        )}
-                    </form.Subscribe>
-                </form>
-            </motion.div>
+                      <Minus className="w-5 h-5" />
+                    </button>
+                    <span className="w-8 text-center text-2xl font-bold font-heading text-primary">
+                      {guestsField.state.value.length}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => guestsField.pushValue(makeGuest())}
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-primary hover:bg-primary/5 transition-all disabled:opacity-20"
+                      disabled={guestsField.state.value.length >= 10}
+                    >
+                      <Plus className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
 
-        </section>
-    );
+                {/* Lista Dinamica degli Ospiti */}
+                <div className="space-y-6">
+                  <AnimatePresence mode="popLayout">
+                    {guestsField.state.value.map((_, i) => (
+                      <motion.div
+                        key={`guest-${i}`}
+                        layout
+                        initial={{opacity: 0, scale: 0.95}}
+                        animate={{opacity: 1, scale: 1}}
+                        exit={{opacity: 0, scale: 0.95}}
+                        className="bg-gray-50/50 border border-gray-100 rounded-2xl p-6 md:p-8 space-y-6 relative group"
+                      >
+                        <div className="flex justify-between items-center mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary italic">
+                              #{i + 1}
+                            </div>
+                            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                              Ospite
+                            </span>
+                          </div>
+                          {guestsField.state.value.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => guestsField.removeValue(i)}
+                              className="text-gray-300 hover:text-red-400 transition-colors p-1"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
+                        </div>
+
+                        {/* 3. Nested Fields per ogni proprietà dell'ospite */}
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <form.Field
+                            name={`guests[${i}].name`}
+                            validators={{
+                              onChange: ({value}) => {
+                                if (!value) {
+                                  return 'Il nome è obbligatorio'
+                                }
+                              },
+                            }}
+                          >
+                            {(field) => (
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">
+                                  {data.rsvp.fields.name} *
+                                </label>
+                                <input
+                                  id={field.name}
+                                  name={field.name}
+                                  value={field.state.value ?? ''}
+                                  onBlur={field.handleBlur}
+                                  onChange={(e) => field.handleChange(e.target.value)}
+                                  className="w-full bg-white border-b-2 border-gray-100 px-1 py-2 text-gray-800 focus:border-primary outline-none transition-colors placeholder:text-gray-200"
+                                  placeholder="es. Giulia"
+                                />
+                                {field.state.meta.errors.length > 0 && (
+                                  <span className="text-[10px] text-red-500 font-bold uppercase">
+                                    {field.state.meta.errors[0]}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </form.Field>
+
+                          <form.Field
+                            name={`guests[${i}].surname`}
+                            validators={{
+                              onChange: ({value}) => {
+                                if (!value) {
+                                  return 'Il cognome è obbligatorio'
+                                }
+                              },
+                            }}
+                          >
+                            {(field) => (
+                              <div className="space-y-1.5">
+                                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">
+                                  {data.rsvp.fields.surname} *
+                                </label>
+                                <input
+                                  id={field.name}
+                                  name={field.name}
+                                  value={field.state.value ?? ''}
+                                  onBlur={field.handleBlur}
+                                  onChange={(e) => field.handleChange(e.target.value)}
+                                  className="w-full bg-white border-b-2 border-gray-100 px-1 py-2 text-gray-800 focus:border-primary outline-none transition-colors placeholder:text-gray-200"
+                                  placeholder="es. Bianchi"
+                                />
+                                {field.state.meta.errors.length > 0 && (
+                                  <span className="text-[10px] text-red-500 font-bold uppercase">
+                                    {field.state.meta.errors[0]}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </form.Field>
+                        </div>
+
+                        <div className="flex flex-col md:flex-row gap-6 justify-around">
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-2 text-gray-600">
+                              <ChefHat className="w-4 h-4 text-primary" />
+                              <span className="text-xs font-bold uppercase tracking-widest">
+                                {data.rsvp.allergens.title}
+                              </span>
+                            </div>
+
+                            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                              {data.rsvp.allergens.options.map((opt) => (
+                                <form.Field name={`guests[${i}].allergens`} key={opt}>
+                                  {(field) => (
+                                    <label className="flex items-center gap-3 cursor-pointer group select-none bg-white/50 p-3 rounded-xl border border-transparent hover:border-primary/10 transition-all">
+                                      <input
+                                        type="checkbox"
+                                        checked={(field.state.value ?? []).includes(opt)}
+                                        onChange={() => {
+                                          const current = field.state.value ?? []
+                                          field.handleChange(
+                                            current.includes(opt)
+                                              ? current.filter((o) => o !== opt)
+                                              : [...current, opt],
+                                          )
+                                        }}
+                                        className="w-4 h-4 rounded-md border-gray-300 text-primary focus:ring-primary accent-primary"
+                                      />
+                                      <span className="text-xs font-medium text-gray-600 group-hover:text-gray-900 transition-colors">
+                                        {opt}
+                                      </span>
+                                    </label>
+                                  )}
+                                </form.Field>
+                              ))}
+
+                              <form.Field name={`guests[${i}].showOther`}>
+                                {(field) => (
+                                  <label className="flex items-center gap-3 cursor-pointer group select-none bg-white p-3 rounded-xl border border-primary/5 hover:border-primary transition-all">
+                                    <input
+                                      type="checkbox"
+                                      checked={field.state.value ?? false}
+                                      onChange={(e) => field.handleChange(e.target.checked)}
+                                      className="w-4 h-4 rounded-md border-gray-300 text-primary accent-primary"
+                                    />
+                                    <span className="text-xs font-bold text-primary uppercase tracking-tighter">
+                                      {data.rsvp.allergens.other.label}
+                                    </span>
+                                  </label>
+                                )}
+                              </form.Field>
+                            </div>
+
+                            {/* Textarea Altro condizionale */}
+                            <form.Field name={`guests[${i}].showOther`}>
+                              {(showOtherField) => (
+                                <AnimatePresence>
+                                  {showOtherField.state.value && (
+                                    <form.Field name={`guests[${i}].otherAllergen`}>
+                                      {(otherField) => (
+                                        <motion.div
+                                          initial={{height: 0, opacity: 0}}
+                                          animate={{height: 'auto', opacity: 1}}
+                                          exit={{height: 0, opacity: 0}}
+                                          className="overflow-hidden"
+                                        >
+                                          <textarea
+                                            id={otherField.name}
+                                            value={otherField.state.value ?? ''}
+                                            onChange={(e) =>
+                                              otherField.handleChange(e.target.value)
+                                            }
+                                            placeholder={data.rsvp.allergens.other.placeholder}
+                                            className="w-full mt-2 p-4 rounded-2xl bg-white border border-gray-100 text-xs text-gray-700 outline-none focus:ring-1 focus:ring-primary/20 transition-all resize-none shadow-inner"
+                                            rows={3}
+                                          />
+                                        </motion.div>
+                                      )}
+                                    </form.Field>
+                                  )}
+                                </AnimatePresence>
+                              )}
+                            </form.Field>
+                          </div>
+                          <div className="space-y-4">
+                            <div className="flex items-center gap-2 text-gray-600">
+                              <ChefHat className="w-4 h-4 text-primary" />
+                              <span className="text-xs font-bold uppercase tracking-widest">
+                                {data.rsvp.foodPreferences.title}
+                              </span>
+                            </div>
+
+                            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                              {data.rsvp.foodPreferences.options.map((opt) => (
+                                <form.Field name={`guests[${i}].foodPreferences`} key={opt}>
+                                  {(field) => (
+                                    <label className="flex items-center gap-3 cursor-pointer group select-none bg-white/50 p-3 rounded-xl border border-transparent hover:border-primary/10 transition-all">
+                                      <input
+                                        type="checkbox"
+                                        checked={(field.state.value ?? []).includes(opt)}
+                                        onChange={() => {
+                                          const current = field.state.value ?? []
+                                          field.handleChange(
+                                            current.includes(opt)
+                                              ? current.filter((o) => o !== opt)
+                                              : [...current, opt],
+                                          )
+                                        }}
+                                        className="w-4 h-4 rounded-md border-gray-300 text-primary focus:ring-primary accent-primary"
+                                      />
+                                      <span className="text-xs font-medium text-gray-600 group-hover:text-gray-900 transition-colors">
+                                        {opt}
+                                      </span>
+                                    </label>
+                                  )}
+                                </form.Field>
+                              ))}
+
+                              <form.Field name={`guests[${i}].showOtherFoodPreference`}>
+                                {(field) => (
+                                  <label className="flex items-center gap-3 cursor-pointer group select-none bg-white p-3 rounded-xl border border-primary/5 hover:border-primary transition-all">
+                                    <input
+                                      type="checkbox"
+                                      checked={field.state.value ?? false}
+                                      onChange={(e) => field.handleChange(e.target.checked)}
+                                      className="w-4 h-4 rounded-md border-gray-300 text-primary accent-primary"
+                                    />
+                                    <span className="text-xs font-bold text-primary uppercase tracking-tighter">
+                                      {data.rsvp.allergens.other.label}
+                                    </span>
+                                  </label>
+                                )}
+                              </form.Field>
+                            </div>
+
+                            {/* Textarea Altro condizionale */}
+                            <form.Field name={`guests[${i}].showOtherFoodPreference`}>
+                              {(showOtherField) => (
+                                <AnimatePresence>
+                                  {showOtherField.state.value && (
+                                    <form.Field name={`guests[${i}].otherFoodPreference`}>
+                                      {(otherField) => (
+                                        <motion.div
+                                          initial={{height: 0, opacity: 0}}
+                                          animate={{height: 'auto', opacity: 1}}
+                                          exit={{height: 0, opacity: 0}}
+                                          className="overflow-hidden"
+                                        >
+                                          <textarea
+                                            id={otherField.name}
+                                            value={otherField.state.value ?? ''}
+                                            onChange={(e) =>
+                                              otherField.handleChange(e.target.value)
+                                            }
+                                            placeholder={
+                                              data.rsvp.foodPreferences.other.placeholder
+                                            }
+                                            className="w-full mt-2 p-4 rounded-2xl bg-white border border-gray-100 text-xs text-gray-700 outline-none focus:ring-1 focus:ring-primary/20 transition-all resize-none shadow-inner"
+                                            rows={3}
+                                          />
+                                        </motion.div>
+                                      )}
+                                    </form.Field>
+                                  )}
+                                </AnimatePresence>
+                              )}
+                            </form.Field>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+              </div>
+            )}
+          </form.Field>
+
+          <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+            {([canSubmit, isSubmitting]) => (
+              <button
+                type="submit"
+                disabled={!canSubmit}
+                className={`w-full flex items-center justify-center gap-3 py-5 rounded-2xl text-white font-bold text-base shadow-xl transition-all active:scale-95 group ${
+                  !canSubmit
+                    ? 'bg-gray-300 cursor-not-allowed shadow-none'
+                    : 'bg-primary shadow-primary/20 hover:scale-[1.01] hover:shadow-2xl'
+                }`}
+              >
+                {isSubmitting ? (
+                  <span className="animate-pulse italic text-sm">Inviando la conferma...</span>
+                ) : (
+                  <>
+                    <span className="group-hover:translate-x-1 transition-transform">
+                      {data.rsvp.submit_button}
+                    </span>
+                    <Send className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+                  </>
+                )}
+              </button>
+            )}
+          </form.Subscribe>
+        </form>
+      </motion.div>
+    </section>
+  )
 }

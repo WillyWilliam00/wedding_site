@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export const location = defineType({
   name: 'location',
@@ -30,37 +30,36 @@ export const location = defineType({
       name: 'image',
       title: 'Location Image',
       type: 'image',
-      options: { hotspot: true },
+      options: {hotspot: true},
     }),
     defineField({
       name: 'coordinates',
       title: 'Coordinates',
       type: 'geopoint',
       description: 'Coordinates of the location',
-
     }),
     defineField({
-      name: "gallery",
-      title: "Gallery",
-      type: "array",
+      name: 'gallery',
+      title: 'Gallery',
+      type: 'array',
       of: [
         {
-          type: "image",
-          name: "image",
-          title: "Image",
+          type: 'image',
+          name: 'image',
+          title: 'Image',
           options: {
-            hotspot: true
+            hotspot: true,
           },
           fields: [
             defineField({
-              name: "alt",
-              title: "Alt Text",
-              type: "string",
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'string',
               validation: (Rule) => Rule.required(),
-            })
-          ]
-        }
-      ]
-    })
+            }),
+          ],
+        },
+      ],
+    }),
   ],
 })

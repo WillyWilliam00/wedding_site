@@ -1,6 +1,6 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { client } from '../lib/sanityClient'
-import type { SanityWeddingData } from '../types/wedding'
+import {useSuspenseQuery} from '@tanstack/react-query'
+import {client} from '../lib/sanityClient'
+import type {SanityWeddingData} from '../types/wedding'
 
 export function useWeddingData() {
   return useSuspenseQuery<SanityWeddingData>({

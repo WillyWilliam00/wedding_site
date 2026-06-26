@@ -67,6 +67,116 @@
     text-decoration: none;
     color: inherit;
   }
+}
 
+@layer components {
+  /* ── Section shell ── */
+  .section {
+    @apply px-6 py-20 md:py-24 lg:py-28;
+  }
 
+  .section-content {
+    @apply min-h-[70vh] flex flex-col items-center justify-center;
+  }
+
+  .section-immersive {
+    @apply relative h-[85vh] md:h-[90vh] lg:h-screen w-full overflow-hidden flex items-center px-6 lg:px-12;
+  }
+
+  /* ── Containers ── */
+  .section-container {
+    @apply w-full max-w-6xl mx-auto;
+  }
+
+  .section-container-narrow {
+    @apply w-full max-w-4xl mx-auto;
+  }
+
+  .section-container-wide {
+    @apply w-full max-w-7xl mx-auto;
+  }
+
+  /* ── Typography ── */
+  .section-eyebrow {
+    @apply text-xs md:text-sm uppercase tracking-[0.2em] text-primary font-medium mb-4 block;
+  }
+
+  .section-eyebrow-light {
+    @apply text-xs md:text-sm uppercase tracking-[0.2em] text-primary font-medium mb-4 block;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-heading text-gray-800 leading-tight;
+  }
+
+  .section-title-light {
+    @apply text-3xl md:text-4xl lg:text-5xl font-heading text-white leading-tight;
+  }
+
+  .section-title-center {
+    @apply text-3xl md:text-4xl lg:text-5xl font-heading text-gray-800 leading-tight text-center mb-8 md:mb-12;
+  }
+
+  .section-subtitle {
+    @apply text-base md:text-lg text-gray-600 leading-relaxed italic;
+  }
+
+  .section-subtitle-center {
+    @apply text-base md:text-lg text-gray-600 leading-relaxed italic text-center max-w-2xl mx-auto;
+  }
+
+  .section-body {
+    @apply text-sm md:text-base text-gray-600 leading-relaxed;
+  }
+
+  .section-body-light {
+    @apply text-sm md:text-base text-white/90 leading-relaxed font-light;
+  }
+
+  .section-heading-sm {
+    @apply text-xl md:text-2xl font-heading text-gray-800;
+  }
+
+  .section-label {
+    @apply text-xs uppercase tracking-[0.2em] text-gray-400 font-bold;
+  }
+
+  /* ── Cards & surfaces ── */
+  .section-card {
+    @apply bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 lg:p-10;
+  }
+
+  .glass-card {
+    @apply backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-10;
+  }
+
+  .glass-card-dark {
+    @apply bg-black/30 backdrop-blur-xl border border-white/30 rounded-3xl shadow-2xl p-8 lg:p-10;
+  }
+
+  /* ── Images ── */
+  .aspect-photo {
+    @apply aspect-4/5 overflow-hidden;
+  }
+
+  .aspect-card-image {
+    @apply aspect-4/3 overflow-hidden;
+  }
+
+  .aspect-gallery {
+    @apply aspect-video overflow-hidden;
+  }
+
+  .img-cover {
+    @apply w-full h-full object-cover;
+  }
+
+  /* ── Icon badge ── */
+  .section-icon {
+    @apply w-14 h-14 md:w-16 md:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8;
+  }
+
+  .section-icon svg {
+    @apply w-7 h-7 md:w-8 md:h-8 text-primary;
+  }
 }

@@ -26,8 +26,8 @@ const Footer = ({data}: FooterProps) => {
   const brideInitial = getInitials(couple_names.bride)
 
   return (
-    <footer className="relative bg-linear-to-b from-primary/20 via-primary/10 to-primary/20 py-20 overflow-hidden">
-      <div className="container mx-auto px-4">
+    <footer className="relative section bg-linear-to-b from-primary/20 via-primary/10 to-primary/20 overflow-hidden">
+      <div className="section-container">
         <motion.div
           className="flex flex-col items-center justify-center gap-8"
           initial={{opacity: 0, y: 20}}
@@ -56,7 +56,7 @@ const Footer = ({data}: FooterProps) => {
             viewport={{once: true}}
             transition={{duration: 0.6, delay: 0.4}}
           >
-            <p className="text-xs md:text-sm tracking-[0.2em] uppercase text-primary opacity-50 font-body">
+            <p className="section-label text-primary opacity-50 font-body normal-case tracking-[0.2em]">
               {footer.credits} {couple_names.groom} & {couple_names.bride} • {footer.year}
             </p>
           </motion.div>
@@ -64,7 +64,7 @@ const Footer = ({data}: FooterProps) => {
       </div>
       <div className="flex items-center justify-center gap-2 mt-4">
         <a
-          className="flex items-center justify-center gap-2 text-xs md:text-sm tracking-[0.2em] uppercase opacity-50 font-body"
+          className="flex items-center justify-center gap-2 section-label normal-case tracking-[0.2em] opacity-50 font-body"
           href="https://williamcosta.dev"
           target="_blank"
           rel="noopener noreferrer"

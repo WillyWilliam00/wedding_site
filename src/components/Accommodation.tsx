@@ -36,22 +36,17 @@ export default function Accommodation({data}: AccommodationProps) {
   }, [sortBy, data.accommodation.options])
 
   return (
-    <section
-      id="ospitalita"
-      className="min-h-[60vh] px-6 py-20 bg-linear-to-br from-primary/10 via-primary/20 to-primary/10"
-    >
-      <div className="max-w-440 mx-auto">
+    <section id="ospitalita" className="section bg-linear-to-br from-primary/10 via-primary/20 to-primary/10">
+      <div className="section-container-wide">
         <motion.div
           initial={{opacity: 0, y: 30}}
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true}}
           transition={{duration: 0.6}}
-          className="text-center mb-12"
+          className="text-center mb-10 md:mb-12"
         >
-          <h2 className="text-3xl md:text-5xl mb-4 font-heading text-gray-800">
-            {data.accommodation.title}
-          </h2>
-          <p className="text-base text-gray-600 italic">{data.accommodation.subtitle}</p>
+          <h2 className="section-title-center mb-4">{data.accommodation.title}</h2>
+          <p className="section-subtitle-center">{data.accommodation.subtitle}</p>
         </motion.div>
 
         {/* Sort Controls */}
@@ -101,13 +96,12 @@ export default function Accommodation({data}: AccommodationProps) {
                 transition={{duration: 0.4}}
                 className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 flex flex-col group overflow-hidden"
               >
-                <div className="p-1">
-                  <div className="bg-gray-50 h-48 flex items-center justify-center rounded-t-lg relative overflow-hidden">
+                <div className="aspect-card-image bg-gray-50 flex items-center justify-center rounded-t-xl relative">
                     {option.image_url ? (
                       <img
                         src={option.image_url}
                         alt={option.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="img-cover transition-transform duration-700 group-hover:scale-110"
                         loading="lazy"
                       />
                     ) : (
@@ -115,17 +109,16 @@ export default function Accommodation({data}: AccommodationProps) {
                         {option.name}
                       </div>
                     )}
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm text-xs md:text-sm font-bold text-primary z-10">
+                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm text-xs font-bold text-primary z-10">
                       {option.type}
                     </div>
                   </div>
-                </div>
-                <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-lg md:text-xl mb-4 font-heading text-gray-800 line-clamp-1">
+                <div className="p-5 md:p-6 flex flex-col flex-1">
+                  <h3 className="section-heading-sm mb-4 line-clamp-1">
                     {option.name}
                   </h3>
 
-                  <div className="space-y-3 mb-6 flex-1 text-xs md:text-sm">
+                  <div className="space-y-3 mb-6 flex-1 section-body">
                     <div className="text-gray-500 flex items-start gap-2">
                       <MapPin className="w-4 h-4 shrink-0 text-primary" />
                       <span>{option.address}</span>

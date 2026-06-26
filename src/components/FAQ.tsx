@@ -24,17 +24,14 @@ export default function FAQ({data}: FAQProps) {
   }
 
   return (
-    <section
-      id="faq"
-      className="min-h-[30vh] flex items-center justify-center px-6 py-20 bg-background"
-    >
-      <div className="max-w-4xl w-full">
+    <section id="faq" className="section section-content bg-background">
+      <div className="section-container-narrow">
         <motion.h2
           initial={{opacity: 0, y: 30}}
           whileInView={{opacity: 1, y: 0}}
           viewport={{once: true, margin: '-100px'}}
           transition={{duration: 0.6}}
-          className="text-3xl md:text-5xl text-center mb-12 font-heading"
+          className="section-title-center"
         >
           {data.faq.title}
         </motion.h2>
@@ -53,7 +50,7 @@ export default function FAQ({data}: FAQProps) {
                 onClick={() => toggleFAQ(index)}
                 className="w-full px-6 py-6 text-left flex justify-between items-center hover:bg-gray-50 transition-colors group"
               >
-                <h3 className="text-base md:text-lg font-semibold pr-4 text-gray-800">
+                <h3 className="text-sm md:text-base font-semibold pr-4 text-gray-800">
                   {item.question}
                 </h3>
                 <motion.div
@@ -74,7 +71,7 @@ export default function FAQ({data}: FAQProps) {
                 transition={{duration: 0.3}}
                 className="overflow-hidden"
               >
-                <div className="px-6 pb-6 text-sm md:text-base text-gray-600 leading-relaxed border-t border-gray-50 pt-4">
+                <div className="px-6 pb-6 section-body border-t border-gray-50 pt-4">
                   {item.answer}
                 </div>
               </motion.div>

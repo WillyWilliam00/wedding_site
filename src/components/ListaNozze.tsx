@@ -1,6 +1,6 @@
 import {motion} from 'framer-motion'
 import {Gift, Copy, Check} from 'lucide-react'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 
 interface ListaNozzeProps {
   data: {
@@ -21,52 +21,38 @@ export default function ListaNozze({data}: ListaNozzeProps) {
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
-  useEffect(() => {
-    console.log(data)
-  }, [data])
   return (
-    <section
-      id="lista-nozze"
-      className="min-h-screen flex items-center justify-center px-6 py-20 bg-background"
-    >
+    <section id="lista-nozze" className="section section-content bg-background">
       <motion.div
         initial={{opacity: 0, y: 50}}
         whileInView={{opacity: 1, y: 0}}
         viewport={{once: true, margin: '-100px'}}
         transition={{duration: 0.8}}
-        className="max-w-3xl w-full text-center"
+        className="section-container-narrow text-center"
       >
-        <div className="w-12 h-12 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
-          <Gift className="w-6 h-6 md:w-10 md:h-10 text-primary" />
+        <div className="section-icon">
+          <Gift />
         </div>
 
-        <h2 className="text-3xl md:text-6xl mb-8 font-heading text-gray-800">
-          {data.listaNozze.title}
-        </h2>
+        <h2 className="section-title-center">{data.listaNozze.title}</h2>
 
-        <p className="text-base md:text-2xl mb-16 leading-relaxed font-heading font-normal text-gray-600 italic">
-          {data.listaNozze.message}
-        </p>
+        <p className="section-subtitle-center mb-10 md:mb-14">{data.listaNozze.message}</p>
 
-        <div className="bg-white rounded-3xl shadow-xl p-10 md:p-16 border border-gray-100 relative overflow-hidden group">
+        <div className="section-card rounded-3xl shadow-xl relative overflow-hidden group text-left">
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full transition-transform group-hover:scale-110" />
 
           <div className="relative z-10 space-y-10">
             <div>
-              <p className="text-xs md:text-sm uppercase tracking-[0.2em] text-gray-400 font-bold mb-3">
-                Intestatario
-              </p>
-              <p className="text-lg md:text-2xl font-heading text-gray-800">
+              <p className="section-label mb-3">Intestatario</p>
+              <p className="text-lg md:text-xl font-heading text-gray-800">
                 {data.listaNozze.beneficiary}
               </p>
             </div>
 
             <div className="space-y-4">
-              <p className="text-xs md:text-sm uppercase tracking-[0.2em] text-gray-400 font-bold">
-                IBAN
-              </p>
+              <p className="section-label">IBAN</p>
               <div className="relative group/iban">
-                <div className="text-sm md:text-3xl font-mono tracking-tighter p-6 rounded-2xl bg-gray-50 text-gray-700 break-all border border-gray-100 group-hover/iban:border-primary/30 transition-all">
+                <div className="text-sm md:text-lg font-mono tracking-tight p-4 md:p-6 rounded-2xl bg-gray-50 text-gray-700 break-all border border-gray-100 group-hover/iban:border-primary/30 transition-all">
                   {data.listaNozze.iban}
                 </div>
 

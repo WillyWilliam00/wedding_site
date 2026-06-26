@@ -27,10 +27,7 @@ export default function ChiesaSection({data}: ChiesaSectionProps) {
   const locationCoordinates = data.chiesa.coordinates
 
   return (
-    <section
-      id="chiesa"
-      className="relative h-[90vh] lg:h-screen w-full overflow-hidden flex items-center justify-around px-12 lg:px-26"
-    >
+    <section id="chiesa" className="section-immersive justify-around">
       {/* Immersive Background */}
       <div className="absolute inset-0 z-0">
         <motion.div
@@ -42,7 +39,7 @@ export default function ChiesaSection({data}: ChiesaSectionProps) {
           <img
             src={data.chiesa.image_url}
             alt={data.chiesa.name}
-            className="w-full h-full object-cover origin-center"
+            className="img-cover origin-center"
           />
         </motion.div>
         {/* Overlay for better readability - flipped gradient to right */}
@@ -57,7 +54,7 @@ export default function ChiesaSection({data}: ChiesaSectionProps) {
           whileInView={{opacity: 1, x: 0}}
           viewport={{once: true}}
           transition={{duration: 0.8, ease: 'easeOut'}}
-          className="w-full max-w-xl bg-black/30 backdrop-blur-xl border border-white/30 p-8 lg:p-12 rounded-4xl shadow-2xl overflow-hidden relative"
+          className="w-full max-w-xl glass-card-dark overflow-hidden relative"
         >
           {/* Decorative element - different color and position */}
           <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/10 blur-3xl -ml-20 -mb-20 rounded-full" />
@@ -67,7 +64,7 @@ export default function ChiesaSection({data}: ChiesaSectionProps) {
               initial={{opacity: 0, y: 10}}
               whileInView={{opacity: 1, y: 0}}
               transition={{delay: 0.2}}
-              className="text-primary font-medium tracking-[0.2em] italic text-sm lg:text-base mb-4 block"
+              className="section-eyebrow-light italic"
             >
               La Nostra Cerimonia
             </motion.span>
@@ -76,7 +73,7 @@ export default function ChiesaSection({data}: ChiesaSectionProps) {
               initial={{opacity: 0, y: 10}}
               whileInView={{opacity: 1, y: 0}}
               transition={{delay: 0.3}}
-              className="text-3xl lg:text-5xl lg:text-5xl font-heading text-white mb-6 leading-tight"
+              className="section-title-light mb-6"
             >
               {data.chiesa.name}
             </motion.h2>
@@ -85,7 +82,7 @@ export default function ChiesaSection({data}: ChiesaSectionProps) {
               initial={{opacity: 0, y: 10}}
               whileInView={{opacity: 1, y: 0}}
               transition={{delay: 0.4}}
-              className="text-white/90 text-sm lg:text-lg mb-8 leading-relaxed font-light"
+              className="section-body-light mb-8"
             >
               {data.chiesa.description}
             </motion.p>
@@ -104,10 +101,10 @@ export default function ChiesaSection({data}: ChiesaSectionProps) {
                   <MapPinned className="w-5 h-5" />
                 </div>
                 <div className="text-left">
-                  <span className="text-xs lg:text-sm text-white/70 block uppercase tracking-wider">
+                  <span className="section-label text-white/70 block normal-case tracking-wider">
                     Indirizzo - mostra mappa
                   </span>
-                  <span className="text-sm lg:text-base font-medium">{data.chiesa.address}</span>
+                  <span className="text-sm md:text-base font-medium">{data.chiesa.address}</span>
                 </div>
               </button>
             </motion.div>
@@ -133,7 +130,7 @@ export default function ChiesaSection({data}: ChiesaSectionProps) {
 
       {/* Photo Gallery - Positioned to the left */}
       {data.chiesa.gallery && data.chiesa.gallery.length > 0 && (
-        <div className="absolute left-26 p-4 bg-linear-to-bl from-black/40 to-transparent z-10 hidden lg:block max-w-[40vw] rounded-3xl backdrop-blur-sm border border-white/10 shadow-2xl">
+        <div className="absolute left-26 p-4 bg-linear-to-bl from-black/40 to-transparent z-10 hidden xl:block max-w-[40vw] rounded-3xl backdrop-blur-sm border border-white/10 shadow-2xl">
           <PhotoGallery
             images={data.chiesa.gallery}
             title="" // Vuoto per non avere il doppione del titolo
@@ -160,8 +157,8 @@ export default function ChiesaSection({data}: ChiesaSectionProps) {
             >
               <div className="flex items-center justify-between p-6 border-b border-gray-100">
                 <div>
-                  <h3 className="text-2xl font-heading text-gray-800">{data.chiesa.name}</h3>
-                  <p className="text-sm text-gray-500">{data.chiesa.address}</p>
+                  <h3 className="section-heading-sm">{data.chiesa.name}</h3>
+                  <p className="section-body mt-1">{data.chiesa.address}</p>
                 </div>
                 <button
                   onClick={() => setIsMapOpen(false)}

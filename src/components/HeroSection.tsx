@@ -41,7 +41,7 @@ export default function HeroSection({data}: HeroSectionProps) {
       {/* Background Image & Vignette */}
       <div className="absolute inset-0 z-0">
         <motion.div style={{y, scale, opacity}} className="w-full h-full">
-          <img src={hero.image_url} alt="Wedding Hero" className="w-full h-full object-cover" />
+          <img src={hero.image_url} alt="Wedding Hero" className="img-cover" />
         </motion.div>
         {/* Vignette Overlay */}
         <div className="absolute inset-0 bg-radial-[circle_at_center,transparent_40%,rgba(0,0,0,0.6)_100%]" />
@@ -51,7 +51,7 @@ export default function HeroSection({data}: HeroSectionProps) {
       {/* Central Content */}
       <motion.div
         style={{y: contentY, opacity: contentOpacity}}
-        className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4"
+        className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-6"
       >
         <motion.div
           initial={{opacity: 0, y: 20}}
@@ -81,7 +81,7 @@ export default function HeroSection({data}: HeroSectionProps) {
         animate={{opacity: 1, y: 0}}
         transition={{duration: 0.8, delay: 0.5}}
         style={{opacity: contentOpacity}}
-        className="relative z-20 w-full pb-12 px-4 md:flex md:justify-end md:pe-12"
+        className="relative z-20 w-full pb-12 px-6 md:flex md:justify-end md:pe-12"
       >
         <div className="bg-background/10 backdrop-blur-md border border-primary/20 rounded-2xl px-8 py-4 md:py-6 shadow-2xl flex gap-8 md:gap-16">
           {[

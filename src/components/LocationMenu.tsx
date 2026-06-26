@@ -35,10 +35,7 @@ export default function LocationMenu({data}: LocationMenuProps) {
   const locationCoordinates = data.location.coordinates
 
   return (
-    <section
-      id="location"
-      className="relative h-[90vh] lg:h-screen w-full overflow-hidden flex items-center justify-around m px-6"
-    >
+    <section id="location" className="section-immersive justify-around">
       {/* Immersive Background */}
       <div className="absolute inset-0 z-0">
         <motion.div
@@ -47,25 +44,21 @@ export default function LocationMenu({data}: LocationMenuProps) {
           transition={{duration: 15, repeat: Infinity, repeatType: 'reverse', ease: 'linear'}}
           className="w-full h-full"
         >
-          <img
-            src={data.location.image_url}
-            alt={data.location.name}
-            className="w-full h-full object-cover"
-          />
+          <img src={data.location.image_url} alt={data.location.name} className="img-cover" />
         </motion.div>
         {/* Overlay for better readability */}
         <div className="absolute inset-0 bg-black/40 lg:bg-black/20" />
         <div className="absolute inset-0 bg-linear-to-r from-black/50 via-transparent to-transparent hidden lg:block" />
       </div>
 
-      <div className="max-w-7xl  w-full relative z-10">
+      <div className="section-container-wide relative z-10">
         {/* Floating Card */}
         <motion.div
           initial={{opacity: 0, x: -100}}
           whileInView={{opacity: 1, x: 0}}
           viewport={{once: true}}
           transition={{duration: 0.8, ease: 'easeOut'}}
-          className="w-full max-w-lg bg-white/10 backdrop-blur-xl border border-white/20 p-8 lg:p-12 rounded-3xl shadow-2xl overflow-hidden relative"
+          className="w-full max-w-lg glass-card overflow-hidden relative"
         >
           {/* Decorative element */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl -mr-16 -mt-16 rounded-full" />
@@ -75,7 +68,7 @@ export default function LocationMenu({data}: LocationMenuProps) {
               initial={{opacity: 0, y: 10}}
               whileInView={{opacity: 1, y: 0}}
               transition={{delay: 0.2}}
-              className="text-primary font-medium tracking-[0.2em] uppercase text-xs lg:text-sm mb-4 block"
+              className="section-eyebrow"
             >
               La Nostra Scelta
             </motion.span>
@@ -84,7 +77,7 @@ export default function LocationMenu({data}: LocationMenuProps) {
               initial={{opacity: 0, y: 10}}
               whileInView={{opacity: 1, y: 0}}
               transition={{delay: 0.3}}
-              className="text-3xl lg:text-5xl lg:text-6xl font-heading text-white mb-6 leading-tight"
+              className="section-title-light mb-6"
             >
               {data.location.name}
             </motion.h2>
@@ -93,7 +86,7 @@ export default function LocationMenu({data}: LocationMenuProps) {
               initial={{opacity: 0, y: 10}}
               whileInView={{opacity: 1, y: 0}}
               transition={{delay: 0.4}}
-              className="text-white/80 text-base lg:text-lg mb-8 leading-relaxed font-light"
+              className="section-body-light mb-8"
             >
               {data.location.description}
             </motion.p>
@@ -112,10 +105,10 @@ export default function LocationMenu({data}: LocationMenuProps) {
                   <MapPinned className="w-5 h-5" />
                 </div>
                 <div className="text-left">
-                  <span className="text-xs lg:text-sm text-white/50 block uppercase tracking-wider">
+                  <span className="section-label text-white/50 block normal-case tracking-wider">
                     Indirizzo - mostra mappa
                   </span>
-                  <span className="text-xs lg:text-sm font-medium">{data.location.address}</span>
+                  <span className="text-sm md:text-base font-medium">{data.location.address}</span>
                 </div>
               </button>
             </motion.div>
@@ -149,7 +142,7 @@ export default function LocationMenu({data}: LocationMenuProps) {
 
       {/* Photo Gallery (Optional: Could be moved or triggered by a button too) */}
       {data.gallery.length > 0 && (
-        <div className=" p-4 bg-linear-to-br from-surface/50 to-gradient-end/50 z-10 hidden lg:block max-w-4xl rounded-3xl shadow-2xl shadow-primary/20">
+        <div className=" p-4 bg-linear-to-br from-surface/50 to-gradient-end/50 z-10 hidden xl:block max-w-4xl rounded-3xl shadow-2xl shadow-primary/20">
           <PhotoGallery images={data.gallery} />
         </div>
       )}
@@ -173,8 +166,8 @@ export default function LocationMenu({data}: LocationMenuProps) {
             >
               <div className="flex items-center justify-between p-6 border-b border-gray-100">
                 <div>
-                  <h3 className="text-2xl font-heading text-gray-800">{data.location.name}</h3>
-                  <p className="text-sm text-gray-500">{data.location.address}</p>
+                  <h3 className="section-heading-sm">{data.location.name}</h3>
+                  <p className="section-body mt-1">{data.location.address}</p>
                 </div>
                 <button
                   onClick={() => setIsMapOpen(false)}
@@ -238,9 +231,7 @@ export default function LocationMenu({data}: LocationMenuProps) {
             >
               <div className="flex items-center justify-between p-8 border-b border-gray-100 bg-background">
                 <div>
-                  <h2 className="text-4xl lg:text-5xl font-heading text-gray-900">
-                    {data.menu.title}
-                  </h2>
+                  <h2 className="section-title mb-4">{data.menu.title}</h2>
                   <div className="w-20 h-1 bg-primary mt-4 rounded-full" />
                 </div>
                 <button
@@ -261,7 +252,7 @@ export default function LocationMenu({data}: LocationMenuProps) {
                         animate={{opacity: 1, y: 0}}
                         transition={{delay: index * 0.1}}
                       >
-                        <h3 className="text-2xl lg:text-3xl font-heading text-primary mb-8 flex items-center gap-4">
+                        <h3 className="text-xl md:text-2xl font-heading text-primary mb-6 md:mb-8 flex items-center gap-4">
                           <span className="w-8 h-px bg-primary/30" />
                           {section.name}
                           <span className="flex-1 h-px bg-primary/30" />
@@ -271,7 +262,7 @@ export default function LocationMenu({data}: LocationMenuProps) {
                             <li key={itemIndex} className="text-gray-700 flex flex-col group">
                               <div className="flex items-start gap-4">
                                 <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-2.5 group-hover:bg-primary transition-colors" />
-                                <span className="text-lg leading-relaxed">{item}</span>
+                                <span className="section-body text-base">{item}</span>
                               </div>
                             </li>
                           ))}

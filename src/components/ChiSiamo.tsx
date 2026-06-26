@@ -17,9 +17,9 @@ export default function ChiSiamo({data}: ChiSiamoProps) {
   return (
     <section
       id="chi-siamo"
-      className="min-h-[70vh] flex items-center justify-center px-6 py-24 md:py-40 bg-background overflow-hidden relative"
+      className="section section-content bg-background overflow-hidden relative"
     >
-      <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+      <div className="section-container grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-20 items-center">
         {/* Image Column */}
         <motion.div
           initial={{opacity: 0, x: -50}}
@@ -32,12 +32,12 @@ export default function ChiSiamo({data}: ChiSiamoProps) {
           <div className="absolute -top-8 -left-8 w-32 h-32 border-l-2 border-t-2 border-primary/20 z-0" />
           <div className="absolute -bottom-8 -right-8 w-32 h-32 border-r-2 border-b-2 border-primary/20 z-0" />
 
-          <div className="relative z-10 p-4 bg-white shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700 ease-in-out group">
-            <div className="overflow-hidden aspect-4/5 relative">
+          <div className="relative z-10 p-4 bg-white shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700 ease-in-out group w-2/3 lg:w-full mx-auto ">
+            <div className="aspect-photo relative">
               <motion.img
                 src={data.chi_siamo.image_url}
                 alt="Il nostro amore"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                className="img-cover transition-transform duration-1000 group-hover:scale-110"
               />
             </div>
           </div>
@@ -60,13 +60,13 @@ export default function ChiSiamo({data}: ChiSiamoProps) {
           transition={{duration: 1.2, ease: 'easeOut'}}
           className="flex flex-col items-center md:items-start text-center md:text-left order-1 md:order-2"
         >
-          <div className="inline-flex items-center gap-4 mb-6 text-primary/60 uppercase tracking-widest text-xs md:text-sm font-medium">
+          <div className="inline-flex items-center gap-4 mb-4 md:mb-6 text-primary/60 uppercase tracking-widest text-xs md:text-sm font-medium">
             <span className="w-8 h-px bg-primary/30"></span>
             {data.chi_siamo.title}
             <span className="w-8 h-px bg-primary/30"></span>
           </div>
 
-          <h2 className="text-3xl md:text-6xl mb-8 font-heading text-gray-800 leading-tight">
+          <h2 className="section-title mb-6 md:mb-8">
             {data.chi_siamo.subtitle.includes(',') ? (
               <>
                 {data.chi_siamo.subtitle.split(',').slice(0, -1).join(' ')}
@@ -82,7 +82,7 @@ export default function ChiSiamo({data}: ChiSiamoProps) {
 
           <div className="w-20 h-1 bg-primary/20 mb-8" />
 
-          <p className="text-base md:text-xl leading-[1.8] font-body font-normal text-gray-600 italic">
+          <p className="section-subtitle text-base md:text-lg max-w-none">
             "{data.chi_siamo.text}"
           </p>
 

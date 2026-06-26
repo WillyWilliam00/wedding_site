@@ -36,18 +36,21 @@ export default function PhotoGallery({images, title = 'Galleria Fotografica'}: P
       whileInView={{opacity: 1, y: 0}}
       viewport={{once: true, margin: '-100px'}}
       transition={{duration: 0.8}}
-      className="mt-12"
+      className="mt-8 md:mt-12"
     >
-      <h3 className="text-3xl md:text-4xl mb-8 font-heading text-white text-center">{title}</h3>
-      <div className="relative rounded-2xl overflow-hidden bg-transparent shadow-xl border-2 border-primary shadow-primary/20 group max-w-5xl mx-auto">
-        {/* Images */}
-        <div className="aspect-video md:aspect-21/9 min-h-[400px] max-h-[600px] min-w-[400px] max-w-[600px]">
+      {title && (
+        <h3 className="text-xl md:text-2xl mb-6 md:mb-8 font-heading text-white text-center">
+          {title}
+        </h3>
+      )}
+      <div className="relative rounded-2xl overflow-hidden bg-transparent shadow-xl border-2 border-primary shadow-primary/20 group max-w-3xl mx-auto">
+        <div className="aspect-gallery">
           <AnimatePresence mode="wait">
             <motion.img
               key={currentImageIndex}
               src={images[currentImageIndex].imageUrl}
               alt={images[currentImageIndex].alt}
-              className="w-full h-full object-cover"
+              className="img-cover"
               initial={{opacity: 0}}
               animate={{opacity: 1}}
               exit={{opacity: 0}}

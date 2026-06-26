@@ -95,20 +95,12 @@ export default function RSVPForm({data}: RSVPFormProps) {
     },
     onSubmit: async ({value}) => {
       try {
-        for (const guest of value.guests) {
-          const {data: existingGuest, error: checkError} = await supabase
-            .from('guests')
-            .select('id')
-            .ilike('name', guest.name.trim())
-            .ilike('surname', guest.surname.trim())
-            .maybeSingle()
-
-          if (checkError) throw checkError
-
-          if (existingGuest) {
-            toast.error(`Ospite ${guest.name} ${guest.surname} già presente`)
-            return
-          }
+        const keys = value.guests.map(
+          (g) => `${g.name.trim().toLowerCase()}-${g.surname.trim().toLowerCase()}`,
+        )
+        if (new Set(keys).size !== keys.length) {
+          toast.error('Hai inserito uno stesso ospite più volte')
+          return
         }
         const {data: groupData, error: groupError} = await supabase
           .from('rsvp_groups')
@@ -120,8 +112,8 @@ export default function RSVPForm({data}: RSVPFormProps) {
 
         const guestsToInsert = value.guests.map((g) => ({
           group_id: groupData.id,
-          name: g.name.trim(),
-          surname: g.surname.trim(),
+          name: g.name.trim().toLowerCase(),
+          surname: g.surname.trim().toLowerCase(),
           allergens: {
             allergens: g.allergens,
             other_allergen: g.showOther ? g.otherAllergen.trim() : null,
@@ -134,7 +126,13 @@ export default function RSVPForm({data}: RSVPFormProps) {
 
         const {error: guestsError} = await supabase.from('guests').insert(guestsToInsert)
 
-        if (guestsError) throw guestsError
+        if (guestsError) {
+          if (guestsError.code === '23505') {
+            toast.error('Ospite già presente')
+            return
+          }
+          throw guestsError
+        }
 
         toast.success(data.rsvp.success_message)
         form.reset()
@@ -148,20 +146,15 @@ export default function RSVPForm({data}: RSVPFormProps) {
   })
 
   return (
-    <section
-      id="rsvp"
-      className="min-h-[70vh] flex flex-col items-center justify-center gap-6 px-6 py-20 bg-surface"
-    >
+    <section id="rsvp" className="section section-content gap-6 bg-surface">
       {/* Contatti */}
       <motion.div
         initial={{opacity: 0, y: 20}}
         whileInView={{opacity: 1, y: 0}}
         viewport={{once: true}}
-        className="max-w-2xl w-full mb-12"
+        className="section-container-narrow mb-10 md:mb-12"
       >
-        <h3 className="text-xl md:text-2xl font-heading text-gray-800 text-center mb-6">
-          {data.contact.title}
-        </h3>
+        <h3 className="section-heading-sm text-center mb-6">{data.contact.title}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-center justify-center gap-3 bg-white/50 border border-primary/10 p-4 rounded-xl shadow-sm">
             <Mail className="w-5 h-5 text-primary" />
@@ -183,17 +176,13 @@ export default function RSVPForm({data}: RSVPFormProps) {
         initial={{opacity: 0, y: 40}}
         whileInView={{opacity: 1, y: 0}}
         viewport={{once: true}}
-        className="max-w-6xl w-full bg-white rounded-3xl shadow-2xl p-8 md:p-14 border border-gray-50 relative overflow-hidden"
+        className="section-container section-card rounded-3xl shadow-2xl relative overflow-hidden"
       >
         <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-primary/20 via-primary to-primary/20" />
 
-        <div className="flex flex-col items-center mb-12">
-          <h2 className="text-4xl md:text-5xl text-center mb-4 font-heading text-gray-800 tracking-tight">
-            {data.rsvp.title}
-          </h2>
-          <p className="text-center text-sm md:text-base text-gray-400 max-w-md italic leading-relaxed">
-            {data.rsvp.subtitle}
-          </p>
+        <div className="flex flex-col items-center mb-10 md:mb-12">
+          <h2 className="section-title-center mb-4 tracking-tight">{data.rsvp.title}</h2>
+          <p className="section-subtitle-center">{data.rsvp.subtitle}</p>
         </div>
 
         <form

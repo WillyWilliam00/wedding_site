@@ -176,7 +176,7 @@ export default function RSVPForm({data}: RSVPFormProps) {
                 <Phone className="w-5 h-5 text-primary" />
                 <a
                   className="text-sm md:text-base font-medium text-gray-700 italic hover:underline"
-                  href={`tel:${info.email}`}
+                  href={`tel:${info.phone}`}
                 >
                   {info.phone}
                 </a>

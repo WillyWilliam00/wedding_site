@@ -80,7 +80,7 @@ function App() {
         <ListaNozze data={{listaNozze: activeData.listaNozze}} />
         <SectionDivider />
 
-        <RSVPForm data={{rsvp: activeData.rsvp, contact: activeData.contact}} />
+        <RSVPForm data={{rsvp: activeData.rsvp, contacts: activeData.contact}} />
         <SectionDivider />
 
         <FAQ data={{faq: activeData.faq}} />

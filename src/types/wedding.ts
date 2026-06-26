@@ -144,8 +144,7 @@ export interface UnifiedWeddingData {
   }
   contact: {
     title: string
-    email: string
-    phone: string
+    details: Record<string, {email: string; phone: string}>
     thanks_text: string
     thanks_image: string
   }
@@ -281,9 +280,14 @@ export interface AccommodationData {
   options: AccommodationOption[]
 }
 
-export interface ContactSettingsData {
+export interface ContactPerson {
   email: string
   phone: string
+  _type: string
+}
+
+export interface ContactSettingsData {
+  contacts: ContactPerson[]
   rsvpDeadline: string
   successMessage: string
   thanksText: string

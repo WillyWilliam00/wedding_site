@@ -6,18 +6,29 @@ export const contactSettings = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'email',
-      title: 'Contact Email',
-      type: 'string',
-      initialValue: 'info@wedding.it',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'phone',
-      title: 'Contact Phone',
-      type: 'string',
-      initialValue: '+39 000 0000000',
-      validation: (Rule) => Rule.required(),
+      name: 'contacts',
+      title: 'Contacts Information',
+      type: 'array',
+      of: [
+        defineField({
+          name: 'martinaContact',
+          title: 'Martina Contact	',
+          type: 'object',
+          fields: [
+            defineField({name: 'email', title: 'Email', type: 'string'}),
+            defineField({name: 'phone', title: 'Phone', type: 'string'}),
+          ],
+        }),
+        defineField({
+          name: 'williamContact',
+          title: 'William Contact	',
+          type: 'object',
+          fields: [
+            defineField({name: 'email', title: 'Email', type: 'string'}),
+            defineField({name: 'phone', title: 'Phone', type: 'string'}),
+          ],
+        }),
+      ],
     }),
     defineField({
       name: 'rsvpDeadline',

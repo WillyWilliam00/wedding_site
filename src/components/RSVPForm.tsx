@@ -47,10 +47,11 @@ interface RSVPFormProps {
       submit_button: string
       success_message: string
     }
-    contact: {
+    contacts: {
       title: string
-      email: string
-      phone: string
+      details: Record<string, {email: string; phone: string}>
+      thanks_text: string
+      thanks_image: string
     }
   }
 }
@@ -68,6 +69,7 @@ const makeGuest = (): GuestEntry => ({
 
 export default function RSVPForm({data}: RSVPFormProps) {
   // 1. Inizializzazione del FORM con TanStack Form
+  console.log(data)
   const form = useForm({
     defaultValues: {
       guests: [makeGuest()] as GuestEntry[],
@@ -154,20 +156,33 @@ export default function RSVPForm({data}: RSVPFormProps) {
         viewport={{once: true}}
         className="section-container-narrow mb-10 md:mb-12"
       >
-        <h3 className="section-heading-sm text-center mb-6">{data.contact.title}</h3>
+        <h3 className="section-heading-sm text-center mb-6">{data.contacts.title}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex items-center justify-center gap-3 bg-white/50 border border-primary/10 p-4 rounded-xl shadow-sm">
-            <Mail className="w-5 h-5 text-primary" />
-            <span className="text-sm md:text-base font-medium text-gray-700 italic">
-              {data.contact.email}
-            </span>
-          </div>
-          <div className="flex items-center justify-center gap-3 bg-white/50 border border-primary/10 p-4 rounded-xl shadow-sm">
-            <Phone className="w-5 h-5 text-primary" />
-            <span className="text-sm md:text-base font-medium text-gray-700 italic">
-              {data.contact.phone}
-            </span>
-          </div>
+          {Object.entries(data.contacts.details).map(([key, info]) => (
+            <div key={key} className="flex flex-col gap-4">
+              {/* Blocco Email */}
+              <div className="flex items-center justify-center gap-3 bg-white/50 border border-primary/10 p-4 rounded-xl shadow-sm">
+                <Mail className="w-5 h-5 text-primary" />
+                <a
+                  className="text-sm md:text-base font-medium text-gray-700 italic hover:underline"
+                  href={`mailto:${info.email}?subject=Matrimonio%20Martina%20e%20William&body=Ciao%2C%20ho%20avuto%20difficolt%C3%A0%20a%20compilare%20il%20form`}
+                >
+                  {info.email}
+                </a>
+              </div>
+
+              {/* Blocco Telefono */}
+              <div className="flex items-center justify-center gap-3 bg-white/50 border border-primary/10 p-4 rounded-xl shadow-sm">
+                <Phone className="w-5 h-5 text-primary" />
+                <a
+                  className="text-sm md:text-base font-medium text-gray-700 italic hover:underline"
+                  href={`tel:${info.email}`}
+                >
+                  {info.phone}
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       </motion.div>
 

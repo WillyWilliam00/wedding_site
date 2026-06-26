@@ -153,8 +153,16 @@ export function useUnifiedWeddingData() {
 
     contact: {
       title: 'Contattaci per info',
-      email: sanityData.contactSettings?.email || '',
-      phone: sanityData.contactSettings?.phone || '',
+      details: sanityData.contactSettings.contacts.reduce(
+        (acc, c) => {
+          acc[c._type] = {
+            phone: c.phone,
+            email: c.email, // Corretto il nome in 'email' (prima avevi 'mail')
+          }
+          return acc
+        },
+        {} as Record<string, {email: string; phone: string}>,
+      ),
       thanks_text: sanityData.contactSettings?.thanksText || '',
       thanks_image: sanityData.contactSettings?.thanksImage
         ? urlFor(sanityData.contactSettings.thanksImage).url()

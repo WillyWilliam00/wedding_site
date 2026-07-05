@@ -10,7 +10,6 @@ import type {UnifiedWeddingData} from '../types/wedding'
  */
 export function useUnifiedWeddingData() {
   const {data: sanityData} = useWeddingData()
-
   // We explicitly map the raw Sanity data to our UnifiedWeddingData interface structure.
   const activeData: UnifiedWeddingData = {
     // Basic Info from Site Settings
@@ -90,10 +89,21 @@ export function useUnifiedWeddingData() {
     },
 
     listaNozze: {
-      title: sanityData.listaNozze?.title || '',
-      message: sanityData.listaNozze?.message || '',
-      iban: sanityData.listaNozze?.iban || '',
-      beneficiary: sanityData.listaNozze?.beneficiary || '',
+      campiSezione: {
+        titleHeader: sanityData.listaNozze?.campiSezione?.titleHeader || '',
+        descriptionHeader: sanityData.listaNozze?.campiSezione?.descriptionHeader || '',
+      },
+      lunaDiMiele: {
+        switchTitle: sanityData.listaNozze?.lunaDiMiele?.switchTitle || '',
+        iban: sanityData.listaNozze?.lunaDiMiele?.iban || '',
+        beneficiary: sanityData.listaNozze?.lunaDiMiele?.beneficiary || '',
+      },
+      listaAmazon: {
+        switchTitle: sanityData.listaNozze?.listaAmazon?.switchTitle || '',
+        link: sanityData.listaNozze?.listaAmazon?.link || '',
+        miniTitle: sanityData.listaNozze?.listaAmazon?.miniTitle || '',
+        description: sanityData.listaNozze?.listaAmazon?.description || '',
+      },
     },
 
     faq: {

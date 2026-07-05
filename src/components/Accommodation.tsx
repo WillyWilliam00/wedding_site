@@ -36,7 +36,10 @@ export default function Accommodation({data}: AccommodationProps) {
   }, [sortBy, data.accommodation.options])
 
   return (
-    <section id="ospitalita" className="section bg-linear-to-br from-primary/10 via-primary/20 to-primary/10">
+    <section
+      id="ospitalita"
+      className="section bg-linear-to-br from-primary/10 via-primary/20 to-primary/10"
+    >
       <div className="section-container-wide">
         <motion.div
           initial={{opacity: 0, y: 30}}
@@ -97,26 +100,24 @@ export default function Accommodation({data}: AccommodationProps) {
                 className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-100 flex flex-col group overflow-hidden"
               >
                 <div className="aspect-card-image bg-gray-50 flex items-center justify-center rounded-t-xl relative">
-                    {option.image_url ? (
-                      <img
-                        src={option.image_url}
-                        alt={option.name}
-                        className="img-cover transition-transform duration-700 group-hover:scale-110"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="text-4xl font-heading text-gray-200 group-hover:text-primary/20 transition-colors uppercase tracking-widest px-4 text-center">
-                        {option.name}
-                      </div>
-                    )}
-                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm text-xs font-bold text-primary z-10">
-                      {option.type}
+                  {option.image_url ? (
+                    <img
+                      src={option.image_url}
+                      alt={option.name}
+                      className="img-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="text-4xl font-heading text-gray-200 group-hover:text-primary/20 transition-colors uppercase tracking-widest px-4 text-center">
+                      {option.name}
                     </div>
+                  )}
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm text-xs font-bold text-primary z-10">
+                    {option.type}
                   </div>
+                </div>
                 <div className="p-5 md:p-6 flex flex-col flex-1">
-                  <h3 className="section-heading-sm mb-4 line-clamp-1">
-                    {option.name}
-                  </h3>
+                  <h3 className="section-heading-sm mb-4 line-clamp-1">{option.name}</h3>
 
                   <div className="space-y-3 mb-6 flex-1 section-body">
                     <div className="text-gray-500 flex items-start gap-2">

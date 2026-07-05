@@ -83,10 +83,21 @@ export interface UnifiedWeddingData {
     }>
   }
   listaNozze: {
-    title: string
-    message: string
-    iban: string
-    beneficiary: string
+    campiSezione: {
+      titleHeader: string
+      descriptionHeader: string
+    }
+    lunaDiMiele: {
+      switchTitle: string
+      iban: string
+      beneficiary: string
+    }
+    listaAmazon: {
+      switchTitle: string
+      link: string
+      miniTitle: string
+      description: string
+    }
   }
   faq: {
     title: string
@@ -247,10 +258,21 @@ export interface ChiesaData {
 }
 
 export interface ListaNozzeData {
-  title: string
-  message: string
-  iban: string
-  beneficiary: string
+  campiSezione: {
+    titleHeader: string
+    descriptionHeader: string
+  }
+  lunaDiMiele: {
+    switchTitle: string
+    iban: string
+    beneficiary: string
+  }
+  listaAmazon: {
+    switchTitle: string
+    link: string
+    miniTitle: string
+    description: string
+  }
 }
 
 export interface MenuData {

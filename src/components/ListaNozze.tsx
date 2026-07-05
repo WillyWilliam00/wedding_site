@@ -51,7 +51,7 @@ export default function ListaNozze({data}: ListaNozzeProps) {
         <div className="shadow-xl relative mx-auto grid w-full max-w-sm grid-cols-2 rounded-full p-1 bg-[#FCFBF8]">
           <span
             className="absolute inset-y-1 left-0 w-[calc(50%-0.25rem)] bg-primary rounded-full transition-all"
-            style={{transform: tabs === 'lunaDiMiele' ? 'translateX(0%)' : 'translateX(100%)'}}
+            style={{transform: tabs === 'lunaDiMiele' ? 'translateX(4%)' : 'translateX(100%)'}}
           />
           <button
             onClick={() => setTabs('lunaDiMiele')}

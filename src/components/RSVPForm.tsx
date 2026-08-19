@@ -1,21 +1,8 @@
-import {useForm} from '@tanstack/react-form'
-import {motion, AnimatePresence} from 'framer-motion'
-import {ChefHat, Send, Mail, Phone, Plus, Minus, Trash2} from 'lucide-react'
-import {supabase} from '../lib/supabase'
-import toast from 'react-hot-toast'
+import {motion} from 'framer-motion'
+import { Mail, Phone} from 'lucide-react'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-interface GuestEntry {
-  name: string
-  surname: string
-  allergens: string[]
-  otherAllergen: string
-  showOther: boolean
-  foodPreferences: string[]
-  otherFoodPreference: string
-  showOtherFoodPreference: boolean
-}
 
 interface RSVPFormProps {
   data: {
